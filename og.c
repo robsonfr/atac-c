@@ -47,8 +47,35 @@ void intro() {
 	cleardevice();	
 }
 
+int bfd_6272, bfd_620c;
+int draw_laser(int p, int q, int r, int s, int t) {
+	int i,j,k,l,c,d;
+	j=p;
+	d=0;
+	for(i=q+8,k=0;;i++) {
+		for(l=0;;l++) {
+			if(bfd_6272 != 0) {
+				c=getpixel(bfd_620c+3,i);
+				if (c==0) {
+					c=getpixel(bfd_620c+12,i);
+					if (c != 0) {
+						d = 1;
+					} 
+				} else {
+					d = 1;
+				}
+				
+			} 
+		}
+	}
+}
+
 void outro() {
-	
+	int i,j;
+	cleardevice();
+	/* First the ship and the ETE Lauro Gomes */
+
+	/* After that, the enemy and the 20 anos */
 }
 
 void main() {
