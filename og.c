@@ -47,13 +47,25 @@ void intro() {
 	cleardevice();	
 }
 
+int comp_cond(int a0, int a2, int a4) {
+	if (a0 < 0) {
+		if (a2 >= a4) {
+			return 1;
+		}
+	} else {
+		if (a2 <= a4) {
+			return 1;
+		}
+	}
+	return 0;
+}
+
 int bfd_6272, bfd_620c;
 int draw_laser(int p, int q, int r, int s, int t) {
-	int i,j,k,l,c,d;
-	j=p;
+	int i,k,l,c,d;
 	d=0;
-	for(i=q+8,k=0;;i++) {
-		for(l=0;;l++) {
+	for(i=q+8,k=0;comp_cond(s,i,r) != 0;i+=s) {
+		for(l=0;l<2;l++) {
 			if(bfd_6272 != 0) {
 				c=getpixel(bfd_620c+3,i);
 				if (c==0) {
@@ -65,9 +77,24 @@ int draw_laser(int p, int q, int r, int s, int t) {
 					d = 1;
 				}
 				
-			} 
+			} else {
+				if (comp_cond(-r,i,q) != 0) {
+
+				}
+				c=getpixel(bfd_620c+)
+			}
 		}
 	}
+	i=getcolor();
+	setcolor(0);
+	line(p,q,p,r);
+	line(p+1,q,p+1,r);
+	if (bfd_6272 != 0) {
+		line(bfd_620c+3,q+8,bfd_620c+3,r);	
+		line(bfd_620c+12,q+8,bfd_620c+12,r);		
+	}
+	setcolor(i);
+	return d;
 }
 
 void outro() {
