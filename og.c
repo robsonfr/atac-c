@@ -62,9 +62,9 @@ int comp_cond(int a0, int a2, int a4) {
 
 int bfd_6272, bfd_620c;
 int draw_laser(int p, int q, int r, int s, int t) {
-	int i,k,l,c,d;
+	int i,l,c,d;
 	d=0;
-	for(i=q+8,k=0;comp_cond(s,i,r) != 0;i+=s) {
+	for(i=q+8;comp_cond(s,i,r) != 0;i+=s) {
 		for(l=0;l<2;l++) {
 			if(bfd_6272 != 0) {
 				c=getpixel(bfd_620c+3,i);
@@ -76,12 +76,21 @@ int draw_laser(int p, int q, int r, int s, int t) {
 				} else {
 					d = 1;
 				}
-				
-			} else {
-				if (comp_cond(-r,i,q) != 0) {
+				putpixel(bfd_620c+3, i,rand() % 4);
+				putpixel(bfd_620c+12, i,rand() % 4);	
+			} 
 
+			if (comp_cond(-s,i,q) != 0) {
+				c=getpixel(p+l,i);
+				if (c != 0) {
+					d = 1;
 				}
-				c=getpixel(bfd_620c+)
+				putpixel(p+l, i, rand() % 4);
+			}
+			if (t != 0) {
+				sound(300+(rand() % 500));
+				delay(1);
+				nosound();
 			}
 		}
 	}
