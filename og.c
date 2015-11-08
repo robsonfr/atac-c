@@ -424,6 +424,9 @@ void hud() {
 	wait_key();	
 }
 
+int v2c, v5c, v7c, v5a, v1c;
+int lives, score;
+
 void main(int argc, char **argv) {
 	int g1, g2;
 	float v4;
@@ -443,4 +446,17 @@ void main(int argc, char **argv) {
 	speed();
 	story();
 	hud();
+
+	v2c = v5c = v7c = v5a = v1c = 0;
+	v4 = 0;
+	powered_up = 0;
+	ship_x = 152;
+	putimage(ship_x, 144, &buffer[SHIP], XOR_PUT);
+	lives = 5;
+	setfillstyle(SOLID_FILL, 2);
+	score = 0;
+	while(lives > 0) {
+		srand(time(0));
+		lives--;
+	}
 }
