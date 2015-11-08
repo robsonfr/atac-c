@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <math.h>
 
 char *aguarde = "\n Aguarde o carregamento dos desenhos...";
 int handle;
@@ -107,11 +108,29 @@ int draw_laser(int p, int q, int r, int s, int t) {
 }
 
 void outro() {
-	int i,j;
+	int i,j,k,l,m;
 	cleardevice();
 	/* First the ship and the ETE Lauro Gomes */
-
-	/* After that, the enemy and the 20 anos */
+	/* After that, the enemy and the 30 anos */
+	for(i=0;i<219;i++) {
+		if (i > 0) {
+			putimage(i+39,40,buffer,XOR_PUT);
+		}
+		putimage(i+40,40,buffer,XOR_PUT);
+		setcolor(3);
+		draw_laser(i+47,35,11,-1,1);
+		for(k=25;k>0;k--) {
+			for(l=0;l<2;l++) {
+				for(j=0;j<2;j++) {
+					putpixel(i+j+47,k+10,rand() % 4);		
+				}
+			}
+			for(j=0;j<2;j++) {
+				putpixel(i+j+47,k+10,titulo[i*25+k])	
+			}
+		}
+	}
+	putimage(258,40,buffer,XOR_PUT);
 }
 
 void main() {
