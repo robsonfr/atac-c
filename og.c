@@ -18,10 +18,36 @@ char *direitos2 = "... a turma 2o. O da area de PD e";
 char *direitos3 = " a ETE LAURO GOMES pelos seus 30 anos";
 char *pressione = "Pressione uma tecla para seguir...";
 
+char *lScore = "SCORE :";
+char *lRecord = "RECORD:";
+char *instrucoes = "Instrucoes";
+char *instr01 = "Seu objetivo e' destruir as naves";
+char *instr02 = "inimigas que sobrevoam sobre voce.";
+char *instr03 = ".Para isso voce dispoe de um canhao";
+char *instr04 = " de longo alcance. Aperte <ALT> p/ ";
+char *instr05 = "atirar. Utilize tambem as teclas";
+char *instr06 = "SHIFT para se mover.Se destruir o";
+char *instr07 = "(P) obtera mais dois tiros extras.";
+char *instr08 = "Ha', entretanto, um porem... se 5 ";
+char *instr09 = "naves descerem para o fim da tela...";
+char *instr10 = "GAME OVER!! Tem um indicador abaixo ";
+char *instr11 = "que indica as naves que desceram,so";
+char *instr12 = "que ao contrario... Assim se tem 2 ";
+char *instr13 = "naves significa que 3 ja desceram...";
+char *instr14 = "De vez em quando esse simbolo cai na";
+char *instr15 = "tela. Se destrui-lo, voce \"ganha\" 3 vi-";
+char *instr16 = "das extras. Tem tambem um (B) que da ";
+char *instr17 = "1000 pontos se voce destrui-lo";
+char *instr18 = "B O A   S O R T E   ! ! !";
+char *instr19 = "Pressione qualquer tecla para comecar...";
+
 int handle;
 char buffer[350];
 #define SHIP 0
 #define ENEMY 70
+#define POWERUP 140
+#define BONUS 210
+#define ONEUP 280
 char titulo[5500];
 char subtitulo[19825];
 
@@ -262,6 +288,11 @@ void outro() {
 
 }
 
+void instructions() {
+	wait_key();
+	cleardevice();
+}
+
 void main(int argc, char **argv) {
 	int g1, g2;
 	float v4;
@@ -277,6 +308,7 @@ void main(int argc, char **argv) {
 	initgraph(&g1,&g2,NULL);
 	intro();
 	outro();
+	instructions();
 /*	bb9();
 	f1d96();
 	f1b84();
