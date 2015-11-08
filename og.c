@@ -189,9 +189,19 @@ void outro() {
 	draw_laser(160,58,39,-1,1);
 	circ_explosion(160,48);
 	putimage(152,60,&buffer[ENEMY],XOR_PUT);
-	for(j=0;;) {
+	for(j=0;j<304;j++) {
 		if (j > 0) {
-			putimage(&buffer[ENEMY],XOR_PUT)
+			putimage(j+2,100,&buffer[ENEMY],XOR_PUT);
+		}
+		putimage(j+3,100,&buffer[ENEMY],XOR_PUT);
+		for(i=65;i>=0;i--) {
+			for(l=0;l<5;l++) {
+				putpixel(j+10,i+120,(rand() % 3)+1);
+				sound((rand() % 500) + 300);
+				delay(1);
+				nosound();
+			}
+			putpixel(j+10,i+120,subtitulo[j*65+i]);
 		}
 	}
 }
