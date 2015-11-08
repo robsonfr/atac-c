@@ -4,7 +4,20 @@
 #include <stdlib.h>
 #include <math.h>
 
+char *etelg = "ETE LAURO GOMES";
+char *anos30 = "30 anos";
 char *aguarde = "\n Aguarde o carregamento dos desenhos...";
+char *autores = "Robson dos Santos Franca";
+char *autores2 = "Ricardo S. Silva";
+char *autores3 = "e Roger Alvarenga";
+char *apresentam = "APRESENTAM ...";
+
+char *atacc = "ATAC-C";
+char *direitos = "ATAC-C(c) Todos os direitos reservados";
+char *direitos2 = "... a turma 2o. O da area de PD e";
+char *direitos3 = " a ETE LAURO GOMES pelos seus 30 anos";
+char *pressione = "Pressione uma tecla para seguir...";
+
 int handle;
 char buffer[350];
 #define SHIP 0
@@ -30,8 +43,8 @@ void intro() {
 	int i,j;
 	int c,d;
 	cleardevice();
-	settextstyle(1,0,3);
-	outtextxy(40,10,"ETE LAURO GOMES");
+	settextstyle(TRIPLEX_FONT,0,3);
+	outtextxy(40,10,etelg);
 	for(i=0;i<220;i++) {
 		for(j=0;j<25;j++) {
 			titulo[i*25+j]=getpixel(i+40,j+10);
@@ -39,8 +52,8 @@ void intro() {
 	}
 	cleardevice();
 	setcolor(2);
-	settextstyle(4,0,8);
-	outtextxy(20,100, "30 anos");
+	settextstyle(GOTHIC_FONT,0,8);
+	outtextxy(20,100, anos30);
 	for(i=0;i<305;i++) {
 		for(j=0;j<65;j++) {
 	/*		subtitulo[i*65+j]=getpixel(i+20,j+100); */
@@ -154,6 +167,16 @@ void circ_explosion(int x, int y) {
 	setfillstyle(1,2);
 }
 
+int puttextcentered(char *texto, int y, int fonte, int tamanho) {
+	int i,tw;
+	settextstyle(fonte,0,tamanho);
+	i = textwidth(texto);
+	tw = (getmaxx() - i) / 2;
+	outtextxy(tw,y,texto);
+	return i;
+}
+
+
 void outro() {
 	int i,j,k,l,m;
 	cleardevice();
@@ -204,9 +227,33 @@ void outro() {
 			putpixel(j+10,i+120,subtitulo[j*65+i]);
 		}
 	}
+	putimage(306,100,&buffer[ENEMY],XOR_PUT);
+	setcolor(3);
+	wait_key();
+	setcolor(0);
+	line(0,100,319,100);
+	for(m=0;m<100;m++) {
+		line(0,m,319,m);
+		line(0,200-m,319,200-m);
+	}
+	setcolor(3);
+	i=puttextcentered(autores,40,GOTHIC_FONT,2);
+	k=textheight("H");
+	m=k+42;
+	puttextcentered(autores2,m,GOTHIC_FONT,2);
+	puttextcentered(autores3,k+m+2,GOTHIC_FONT,2);
+	puttextcentered(apresentam,150,TRIPLEX_FONT,3);
+	wait_key();
+	cleardevice();
+	setcolor(2);
+	puttextcentered(atacc,20, TRIPLEX_FONT, 5);
+	i=textheight("H");
+	line(10,i+23,300,i+23);
+	line(10,i+26,300,i+26);
+	settextstyle(DEFAULT_FONT,0,1);
 }
 
-void main() {
+void main(int argc, char **argv) {
 	int g1, g2;
 	float v4;
 	g1 = CGA;
