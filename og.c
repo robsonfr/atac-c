@@ -18,6 +18,13 @@ char *direitos2 = "... a turma 2o. O da area de PD e";
 char *direitos3 = " a ETE LAURO GOMES pelos seus 30 anos";
 char *pressione = "Pressione uma tecla para seguir...";
 
+char *nave = "Nave";
+char *inimigo = "O Inimigo: 100 pontos";
+char *powerup = "Power Up: 50 pontos + poder de fogo";
+char *extra_life = "Vida Extra: Mais uma vida";
+char *bonus = "Bonus: 1000 pontos";
+char *press2 = "Pressione qualquer tecla...";
+
 char *lScore = "SCORE :";
 char *lRecord = "RECORD:";
 char *instrucoes = "Instrucoes";
@@ -43,11 +50,13 @@ char *instr19 = "Pressione qualquer tecla para comecar...";
 
 int handle;
 char buffer[350];
+
 #define SHIP 0
 #define ENEMY 70
 #define POWERUP 140
-#define BONUS 210
-#define ONEUP 280
+#define ONEUP 210
+#define BONUS 280
+
 char titulo[5500];
 char subtitulo[19825];
 
@@ -289,6 +298,25 @@ void outro() {
 }
 
 void instructions() {
+	puttextcentered(instrucoes,10,DEFAULT_FONT,1);
+
+	putimage(10,40,&buffer[SHIP],COPY_PUT);
+	outtextxy(40,40,nave);
+
+	putimage(10,60,&buffer[ENEMY],COPY_PUT);
+	outtextxy(40,60,inimigo);
+
+	putimage(10,80,&buffer[POWERUP],COPY_PUT);
+	outtextxy(40,85,powerup);
+
+	putimage(10,100,&buffer[ONEUP],COPY_PUT);
+	outtextxy(40,105,extra_life);
+
+	putimage(10,120,&buffer[BONUS],COPY_PUT);
+	outtextxy(40,125,bonus);
+
+	puttextcentered(press2, 160, SANS_SERIF_FONT, 1);
+
 	wait_key();
 	cleardevice();
 }
