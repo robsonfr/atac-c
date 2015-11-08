@@ -8,7 +8,7 @@ char *aguarde = "\n Aguarde o carregamento dos desenhos...";
 int handle;
 char buffer[350];
 #define SHIP 0
-#define ENEMY 70;
+#define ENEMY 70
 char titulo[5500];
 char subtitulo[19825];
 
@@ -179,14 +179,21 @@ void outro() {
 	}
 	putimage(258,40,&buffer[SHIP],XOR_PUT);
 	for(l=258;l>=152;l--) {
-		putimage(l+1,40,&buffer[SHIP],XOR_PUT);
-		putimage(l+1,60,&buffer[ENEMY],XOR_PUT);
-
+		if (l<258) {
+			putimage(l+1,40,&buffer[SHIP],XOR_PUT);
+			putimage(l+1,60,&buffer[ENEMY],XOR_PUT);
+		}
 		putimage(l,40,&buffer[SHIP],XOR_PUT);
 		putimage(l,60,&buffer[ENEMY],XOR_PUT);
 	}
 	draw_laser(160,58,39,-1,1);
 	circ_explosion(160,48);
+	putimage(152,60,&buffer[ENEMY],XOR_PUT);
+	for(j=0;;) {
+		if (j > 0) {
+			putimage(&buffer[ENEMY],XOR_PUT)
+		}
+	}
 }
 
 void main() {
@@ -210,3 +217,4 @@ void main() {
 	f132b();*/
 
 }
+
