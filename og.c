@@ -7,8 +7,12 @@
 char *aguarde = "\n Aguarde o carregamento dos desenhos...";
 int handle;
 char buffer[350];
+#define SHIP 0
+#define ENEMY 70;
 char titulo[5500];
 char subtitulo[19825];
+
+const float DEG_TO_RAD = 57.29577951308232;
 
 void wait_key() {
 	int code;
@@ -27,7 +31,7 @@ void intro() {
 	int c,d;
 	cleardevice();
 	settextstyle(1,0,3);
-	outtextxy(40,10,"ETE Lauro Gomes");
+	outtextxy(40,10,"ETE LAURO GOMES");
 	for(i=0;i<220;i++) {
 		for(j=0;j<25;j++) {
 			titulo[i*25+j]=getpixel(i+40,j+10);
@@ -107,6 +111,49 @@ int draw_laser(int p, int q, int r, int s, int t) {
 	return d;
 }
 
+void circ_explosion(int x, int y) {
+	int i,j,c;
+	float k,l,m,n,o,p;
+	for(i=0;i<=8;i++) {
+		for(j=0;j<15;j++) {
+			k = j * 24;
+			l = k / DEG_TO_RAD;
+			m = cos(l) * i + x;
+			n = sin(l) * i + y;
+			if (i > 2) {
+				o = cos(l) * (i - 2) + x;
+				p = sin(l) * (i - 2) + y;
+				putpixel((int) o, (int) p,0);	
+			}
+			putpixel((int) m, (int) n, rand() % 4);
+
+		}
+	}
+
+	for(i=6;i<=8;i++) {
+		for(j=0;j<15;j++) {
+			k = j * 24;
+			l = k / DEG_TO_RAD;
+			m = cos(l) * i + x;
+			n = sin(l) * i + y;
+			putpixel((int) m, (int) n, 0);
+		}
+	}
+	c=getcolor();
+	setcolor(0);
+	setfillstyle(1,0);
+	for(i=0;i<=8;i++) {
+		for(j=0;j<16;j++) {
+			setfillstyle(1, rand() % 4);
+			bar(x-i,y-i,x+i,y+i);	
+		}
+		setfillstyle(1,0);
+		bar(x-i,y-i,x+i,y+i);
+	}
+	setcolor(c);
+	setfillstyle(1,2);
+}
+
 void outro() {
 	int i,j,k,l,m;
 	cleardevice();
@@ -114,9 +161,9 @@ void outro() {
 	/* After that, the enemy and the 30 anos */
 	for(i=0;i<219;i++) {
 		if (i > 0) {
-			putimage(i+39,40,buffer,XOR_PUT);
+			putimage(i+39,40,&buffer[SHIP],XOR_PUT);
 		}
-		putimage(i+40,40,buffer,XOR_PUT);
+		putimage(i+40,40,&buffer[SHIP],XOR_PUT);
 		setcolor(3);
 		draw_laser(i+47,35,11,-1,1);
 		for(k=25;k>0;k--) {
@@ -126,11 +173,20 @@ void outro() {
 				}
 			}
 			for(j=0;j<2;j++) {
-				putpixel(i+j+47,k+10,titulo[i*25+k])	
+				putpixel(i+j+47,k+10,titulo[i*25+k]);	
 			}
 		}
 	}
-	putimage(258,40,buffer,XOR_PUT);
+	putimage(258,40,&buffer[SHIP],XOR_PUT);
+	for(l=258;l>=152;l--) {
+		putimage(l+1,40,&buffer[SHIP],XOR_PUT);
+		putimage(l+1,60,&buffer[ENEMY],XOR_PUT);
+
+		putimage(l,40,&buffer[SHIP],XOR_PUT);
+		putimage(l,60,&buffer[ENEMY],XOR_PUT);
+	}
+	draw_laser(160,58,39,-1,1);
+	circ_explosion(160,48);
 }
 
 void main() {
