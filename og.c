@@ -192,11 +192,11 @@ void outro() {
 		for(k=25;k>0;k--) {
 			for(l=0;l<2;l++) {
 				for(j=0;j<2;j++) {
-					putpixel(i+j+47,k+10,rand() % 4);		
+					putpixel(i+j+47,k+10,rand() % 4);
 				}
 			}
 			for(j=0;j<2;j++) {
-				putpixel(i+j+47,k+10,titulo[i*25+k]);	
+				putpixel(i+j+47,k+10,titulo[i*25+k]);
 			}
 		}
 	}
