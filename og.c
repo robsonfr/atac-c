@@ -35,7 +35,7 @@ void intro() {
 	cleardevice();
 	setcolor(2);
 	settextstyle(4,0,8);
-	outtextxy(20,100, "20 anos");
+	outtextxy(20,100, "30 anos");
 	for(i=0;i<305;i++) {
 		for(j=0;j<65;j++) {
 	/*		subtitulo[i*65+j]=getpixel(i+20,j+100); */
@@ -60,24 +60,24 @@ int comp_cond(int a0, int a2, int a4) {
 	return 0;
 }
 
-int bfd_6272, bfd_620c;
+int powered_up, ship_x;
 int draw_laser(int p, int q, int r, int s, int t) {
 	int i,l,c,d;
 	d=0;
 	for(i=q+8;comp_cond(s,i,r) != 0;i+=s) {
 		for(l=0;l<2;l++) {
-			if(bfd_6272 != 0) {
-				c=getpixel(bfd_620c+3,i);
+			if(powered_up != 0) {
+				c=getpixel(ship_x+3,i);
 				if (c==0) {
-					c=getpixel(bfd_620c+12,i);
+					c=getpixel(ship_x+12,i);
 					if (c != 0) {
 						d = 1;
 					} 
 				} else {
 					d = 1;
 				}
-				putpixel(bfd_620c+3, i,rand() % 4);
-				putpixel(bfd_620c+12, i,rand() % 4);	
+				putpixel(ship_x+3, i,rand() % 4);
+				putpixel(ship_x+12, i,rand() % 4);	
 			} 
 
 			if (comp_cond(-s,i,q) != 0) {
@@ -98,9 +98,9 @@ int draw_laser(int p, int q, int r, int s, int t) {
 	setcolor(0);
 	line(p,q,p,r);
 	line(p+1,q,p+1,r);
-	if (bfd_6272 != 0) {
-		line(bfd_620c+3,q+8,bfd_620c+3,r);	
-		line(bfd_620c+12,q+8,bfd_620c+12,r);		
+	if (powered_up != 0) {
+		line(ship_x+3,q+8,ship_x+3,r);	
+		line(ship_x+12,q+8,ship_x+12,r);		
 	}
 	setcolor(i);
 	return d;
@@ -116,6 +116,7 @@ void outro() {
 
 void main() {
 	int g1, g2;
+	float v4;
 	g1 = CGA;
 	g2 = CGAC0;
 	printf(aguarde);
@@ -128,5 +129,9 @@ void main() {
 	initgraph(&g1,&g2,NULL);
 	intro();
 	outro();
+/*	bb9();
+	f1d96();
+	f1b84();
+	f132b();*/
 
 }
