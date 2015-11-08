@@ -4,6 +4,8 @@
 #include <stdlib.h>
 #include <math.h>
 
+void level();
+
 char *etelg = "ETE LAURO GOMES";
 char *anos30 = "30 anos";
 char *aguarde = "\n Aguarde o carregamento dos desenhos...";
@@ -376,10 +378,10 @@ void story() {
 	cleardevice();
 	gettextsettings(&tset);
 	setcolor(1);
-	settextjustify(1,0);
+	settextjustify(CENTER_TEXT,BOTTOM_TEXT);
 	settextstyle(DEFAULT_FONT,0,1);
 	outtextxy(160,10,instrucoes);
-	settextjustify(0,0);
+	settextjustify(LEFT_TEXT,BOTTOM_TEXT);
 	outtextxy(2,20, instr01);
 	outtextxy(2,28, instr02);
 	outtextxy(2,36, instr03);
@@ -398,11 +400,28 @@ void story() {
 	outtextxy(2,140, instr16);
 	outtextxy(2,148, instr17);
 	outtextxy(42,156, instr18);
-	settextjustify(1,0);
+	settextjustify(CENTER_TEXT,BOTTOM_TEXT);
 	outtextxy(160,170,instr19);	
 	wait_key();
 	settextjustify(tset.horiz, tset.vert);
-	
+
+}
+
+void hud() {
+	cleardevice();
+	setfillstyle(SOLID_FILL,2);
+	bar(0,0,319,199);
+	setfillstyle(SOLID_FILL,0);
+	bar(10,10,240,160);
+	setcolor(0);
+	settextstyle(TRIPLEX_FONT,1,2);
+	outtextxy(270,0,etelg);
+	settextstyle(GOTHIC_FONT,1,2);
+	outtextxy(290,0,anos30);
+	settextstyle(DEFAULT_FONT,0,1);
+	outtextxy(20,180,lScore);
+	outtextxy(20,191,lRecord);
+	wait_key();	
 }
 
 void main(int argc, char **argv) {
@@ -423,5 +442,5 @@ void main(int argc, char **argv) {
 	instructions();
 	speed();
 	story();
-
+	hud();
 }
