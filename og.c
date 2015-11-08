@@ -251,6 +251,15 @@ void outro() {
 	line(10,i+23,300,i+23);
 	line(10,i+26,300,i+26);
 	settextstyle(DEFAULT_FONT,0,1);
+	k=textheight("H");
+	setcolor(3);
+	outtextxy(5,80,direitos);
+	outtextxy(5,82+k,direitos2);
+	outtextxy(5,84+(k<<1),direitos3);
+	puttextcentered(pressione,150,DEFAULT_FONT,1);
+	wait_key();
+	cleardevice();
+
 }
 
 void main(int argc, char **argv) {
