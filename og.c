@@ -18,12 +18,23 @@ char *direitos2 = "... a turma 2o. O da area de PD e";
 char *direitos3 = " a ETE LAURO GOMES pelos seus 30 anos";
 char *pressione = "Pressione uma tecla para seguir...";
 
+char *pers = "Personagens e valores";
 char *nave = "Nave";
 char *inimigo = "O Inimigo: 100 pontos";
 char *powerup = "Power Up: 50 pontos + poder de fogo";
 char *extra_life = "Vida Extra: Mais uma vida";
 char *bonus = "Bonus: 1000 pontos";
 char *press2 = "Pressione qualquer tecla...";
+
+char *selvel = "Selecione a velocidade";
+char *lento = "1. Lento";
+char *medio = "2. Medio";
+char *rapido = "3. Rapido";
+
+char *seldif = "Escolha a dificuldade";
+char *facil = "1. Facil";
+char *dificil = "2. Dificil";
+
 
 char *lScore = "SCORE :";
 char *lRecord = "RECORD:";
@@ -298,7 +309,7 @@ void outro() {
 }
 
 void instructions() {
-	puttextcentered(instrucoes,10,DEFAULT_FONT,1);
+	puttextcentered(pers,10,DEFAULT_FONT,1);
 
 	putimage(10,40,&buffer[SHIP],COPY_PUT);
 	outtextxy(40,40,nave);
@@ -321,6 +332,79 @@ void instructions() {
 	cleardevice();
 }
 
+int velocity;
+int difficulty;
+
+int velos[] = {60,30,10};
+
+void speed() {
+	int i;
+	cleardevice();
+	puttextcentered(selvel, 20, TRIPLEX_FONT, 1);
+	outtextxy(15,40,lento);
+	outtextxy(15,60,medio);
+	outtextxy(15,80,rapido);
+	i = getch();
+	if ((i>=49) && (i<=51)) {
+		velocity = velos[i-49];
+	} else {
+		velocity = 30;
+	}
+	puttextcentered(press2, 140, TRIPLEX_FONT, 1);
+	wait_key();
+	level();
+}
+
+void level() {
+	int i;
+	cleardevice();
+	puttextcentered(seldif, 20, GOTHIC_FONT, 4);
+	outtextxy(20,60,facil);
+	outtextxy(20,100,dificil);
+	i = getch();
+	if ((i>=49) && (i<=50)) {
+		difficulty = i-49;
+	} else {
+		difficulty = 0;
+	}
+	puttextcentered(press2, 140, TRIPLEX_FONT, 1);
+}
+
+struct textsettingstype tset;
+
+void story() {
+	cleardevice();
+	gettextsettings(&tset);
+	setcolor(1);
+	settextjustify(1,0);
+	settextstyle(DEFAULT_FONT,0,1);
+	outtextxy(160,10,instrucoes);
+	settextjustify(0,0);
+	outtextxy(2,20, instr01);
+	outtextxy(2,28, instr02);
+	outtextxy(2,36, instr03);
+	outtextxy(2,44, instr04);
+	outtextxy(2,52, instr05);
+	outtextxy(2,60, instr06);
+	outtextxy(2,68, instr07);
+	outtextxy(2,76, instr08);
+	outtextxy(2,84, instr09);
+	outtextxy(2,92, instr10);
+	outtextxy(2,100, instr11);
+	outtextxy(2,108, instr12);
+	outtextxy(2,116, instr13);
+	outtextxy(2,124, instr14);
+	outtextxy(2,132, instr15);
+	outtextxy(2,140, instr16);
+	outtextxy(2,148, instr17);
+	outtextxy(42,156, instr18);
+	settextjustify(1,0);
+	outtextxy(160,170,instr19);	
+	wait_key();
+	settextjustify(tset.horiz, tset.vert);
+	
+}
+
 void main(int argc, char **argv) {
 	int g1, g2;
 	float v4;
@@ -337,10 +421,7 @@ void main(int argc, char **argv) {
 	intro();
 	outro();
 	instructions();
-/*	bb9();
-	f1d96();
-	f1b84();
-	f132b();*/
+	speed();
+	story();
 
 }
-
