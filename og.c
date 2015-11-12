@@ -509,6 +509,24 @@ void main(int argc, char **argv) {
 			if (enemy_x > 224.0) {
 				enemy_x = 224.0;
 			}
+			putimage(enemy_x, e_y, &buffer[ENEMY], XOR_PUT);
+			if ((difficulty != 0) && ((rand() % 1000) < 50) && (e_y <= 112)) {
+				int t, j;
+				t = powered_up;
+				powered_up = 0;
+				j = draw_laser(enemy_x + 7.0, e_y + 10, 150, 1, 1);
+				powered_up = t;
+				if ((j != 0) && (abs(ship_x - enemy_x) < 8)) {
+					circ_explosion(ship_x + 8, 152);
+					lives--;
+					ship_x = 152;
+					if (lives != 0){
+						putimage(ship_x, 144, &buffer[SHIP], XOR_PUT);
+					}
+				}
+			}
+			
+
 		}
 
 	} while (lives > 0);
