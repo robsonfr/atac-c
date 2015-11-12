@@ -424,11 +424,17 @@ void hud() {
 	wait_key();	
 }
 
-int v2c, v5c, v7c, v5a, v1c;
-int lives, score;
+int dr_oneup, dr_bonus, dr_powerup, v5a, v1c;
+int lives;
+float score, record;
+
+int enemy_center, e_y, pup_x, oneup_x, bonus_x;
+float enemy_x, pup_y, oneup_y, bonus_y;
+float enemy_y;
 
 void main(int argc, char **argv) {
 	int g1, g2;
+	int i;
 	float v4;
 	g1 = CGA;
 	g2 = CGAC0;
@@ -447,7 +453,7 @@ void main(int argc, char **argv) {
 	story();
 	hud();
 
-	v2c = v5c = v7c = v5a = v1c = 0;
+	dr_oneup = dr_bonus = dr_powerup = v5a = v1c = 0;
 	v4 = 0;
 	powered_up = 0;
 	ship_x = 152;
@@ -455,8 +461,55 @@ void main(int argc, char **argv) {
 	lives = 5;
 	setfillstyle(SOLID_FILL, 2);
 	score = 0;
-	while(lives > 0) {
+	do {
 		srand(time(0));
-		lives--;
-	}
+		enemy_center = (rand() % 214) + 10;
+		i=rand() % 1000;
+		if (i < (100 / (difficulty + 1))) {
+			if ((dr_powerup == 0) && (dr_bonus == 0) && (dr_oneup == 0)) {
+				dr_oneup = 1;
+				oneup_y = 14.0;
+				do {
+					oneup_x = (rand() % 214) + 10;
+				} while (oneup_x == enemy_center);
+			}
+		}
+	
+		i=rand() % 1000;
+		if (i < (200 / (difficulty + 1))) {
+			if ((dr_powerup == 0) && (dr_bonus == 0) && (dr_oneup == 0)) {
+				dr_powerup = 1;
+				pup_y = 14.0;
+				do {
+					pup_x = (rand() % 214) + 10;
+				} while (pup_x == enemy_center);
+			}
+		}
+
+		i=rand() % 1000;
+		if (i < (200 / (difficulty + 1))) {
+			if ((dr_powerup == 0) && (dr_bonus == 0) && (dr_oneup == 0)) {
+				dr_bonus = 1;
+				bonus_y = 14.0;
+				do {
+					bonus_x = (rand() % 214) + 10;
+				} while (bonus_x == enemy_center);
+			}
+		}
+		enemy_y = 10.0;
+		while (enemy_y <=  128.0) {
+			e_y = enemy_y;
+			if (e_y > 10) {
+				putimage((int)enemy_x, e_y - 1, &buffer[ENEMY], XOR_PUT);
+			}
+			enemy_x = cos(enemy_y * 4.0 / DEG_TO_RAD) * 20 + enemy_center;
+			if (enemy_x < 11.0) {
+				enemy_x = 11.0;
+			}		
+			if (enemy_x > 224.0) {
+				enemy_x = 224.0;
+			}
+		}
+
+	} while (lives > 0);
 }
