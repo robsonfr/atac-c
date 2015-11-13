@@ -426,7 +426,21 @@ void hud() {
 }
 
 int check_collision() {
-	return 10;
+	int i;
+	i = enemy_y;
+	if ((dr_bonus != 0) && (bonus_y < enemy_y) &&  (bonus_y < pup_y)  && (bonus_y < oneup_y)) { 
+		i = bonus_y;
+	}
+
+	if ((dr_powerup != 0) && (pup_y < enemy_y) &&  (pup_y < bonus_y)  && (pup_y < oneup_y)) { 
+		i = pup_y;
+	}
+
+	if ((dr_oneup != 0) && (oneup_y < enemy_y) &&  (oneup_y < pup_y)  && (oneup_y < bonus_y)) { 
+		i = oneup_y;
+	}
+
+	return i;
 }
 
 int shoot() {
@@ -465,7 +479,7 @@ int shoot() {
 }
 
 int dr_oneup, dr_bonus, dr_powerup, v5a, v1c;
-int lives;
+int lives, hit_enemy;
 float score, record;
 
 int enemy_center, e_y, pup_x, oneup_x, bonus_x;
@@ -608,11 +622,12 @@ void main(int argc, char **argv) {
 				bonus_y = 14.0;		
 			}
 			c=peekb(0x0040,0x0017) & 0x0f;
-			if (c == 1) {
+			if (c == 2) {
 
-			} else if (c == 2) {
+			} else if (c == 1) {
 
 			} 
+			hit_enemy = 0;
 			if ((c & 8) != 0) {
 				switch(shoot()) {
 					case 0: 
@@ -632,6 +647,8 @@ void main(int argc, char **argv) {
 					default:
 				}
 			}
+			delay(velocity);
+			enemy_y += 1.0;
 		}
 
 	} while (lives > 0);
