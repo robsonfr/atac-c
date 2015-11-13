@@ -426,16 +426,42 @@ void hud() {
 }
 
 int check_collision() {
-	int sx, d_enemy, d_pup, d_op, d_bo;
+	return 10;
+}
+
+int shoot() {
+	int sx, d[4];
+	int ex, e[4];
+	int i,j;
 	int ret = 0;
-	float fx;
+	float fx, gx;
 	sx = ship_x + 8;
+	ex = ship_x + 3;
 	fx = sx;
-	d_enemy = abs(fx - (enemy_x + 8.0));
-	d_pup = abs(sx - (pup_x + 8));
-	d_op = abs(sx - (oneup_x + 8));
-	d_bo = 	abs(sx - (bonus_x + 8));
-	
+	gx = ex;
+	d[0] = abs(fx - (enemy_x + 8.0));
+	d[1] = abs(sx - (pup_x + 8));
+	d[2] = abs(sx - (oneup_x + 8));
+	d[3] = 	abs(sx - (bonus_x + 8));
+
+	e[0] = abs(gx - (enemy_x + 8.0));
+	e[1] = abs(ex - (pup_x + 8));
+	e[2] = abs(ex - (oneup_x + 8));
+	e[3] = abs(ex - (bonus_x + 8));
+
+	j = check_collision();
+
+	if (draw_laser(ship_x + 7, 144, j, -1, 1) != 0) {
+		for(i=0;i<4;i++) {
+			if (d[i] <= 8) {
+				ret = i + 1;
+				break;
+			} 
+		}
+	} else {
+		ret = 0;
+	}
+	return ret;
 }
 
 int dr_oneup, dr_bonus, dr_powerup, v5a, v1c;
@@ -587,6 +613,25 @@ void main(int argc, char **argv) {
 			} else if (c == 2) {
 
 			} 
+			if ((c & 8) != 0) {
+				switch(shoot()) {
+					case 0: 
+
+					break;
+					case 1:
+
+					break;
+
+					case 2:
+
+					break;
+
+					case 3:
+
+					break;
+					default:
+				}
+			}
 		}
 
 	} while (lives > 0);
