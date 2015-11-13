@@ -3,6 +3,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <math.h>
+#include <dos.h>
 
 void level();
 
@@ -424,6 +425,19 @@ void hud() {
 	wait_key();	
 }
 
+int check_collision() {
+	int sx, d_enemy, d_pup, d_op, d_bo;
+	int ret = 0;
+	float fx;
+	sx = ship_x + 8;
+	fx = sx;
+	d_enemy = abs(fx - (enemy_x + 8.0));
+	d_pup = abs(sx - (pup_x + 8));
+	d_op = abs(sx - (oneup_x + 8));
+	d_bo = 	abs(sx - (bonus_x + 8));
+	
+}
+
 int dr_oneup, dr_bonus, dr_powerup, v5a, v1c;
 int lives;
 float score, record;
@@ -432,9 +446,12 @@ int enemy_center, e_y, pup_x, oneup_x, bonus_x;
 float enemy_x, pup_y, oneup_y, bonus_y;
 float enemy_y;
 
+
+
 void main(int argc, char **argv) {
 	int g1, g2;
 	int i;
+	char c;
 	float v4;
 	g1 = CGA;
 	g2 = CGAC0;
@@ -526,7 +543,50 @@ void main(int argc, char **argv) {
 				}
 			}
 			
+			if ((dr_oneup == 1) && (oneup_y < 128.0)) {
+				if (oneup_y > 14.0) {
+					putimage(oneup_x, oneup_y, &buffer[ONEUP], XOR_PUT);
+				}
+				oneup_y += 1.0;
+				putimage(oneup_x, oneup_y, &buffer[ONEUP], XOR_PUT);
+			}
+			if ((dr_oneup == 1) && (oneup_y >= 128.0)) {
+				dr_oneup = 0;
+				putimage(oneup_x, oneup_y, &buffer[ONEUP], XOR_PUT);
+				oneup_y = 14.0;		
+			}
 
+			if ((dr_powerup == 1) && (pup_y < 128.0)) {
+				if (pup_y > 14.0) {
+					putimage(pup_x, pup_y, &buffer[POWERUP], XOR_PUT);
+				}
+				pup_y += 1.0;
+				putimage(pup_x, pup_y, &buffer[POWERUP], XOR_PUT);
+			}
+			if ((dr_powerup == 1) && (pup_y >= 128.0)) {
+				dr_powerup = 0;
+				putimage(pup_x, pup_y, &buffer[POWERUP], XOR_PUT);
+				pup_y = 14.0;		
+			}
+
+			if ((dr_bonus == 1) && (bonus_y < 128.0)) {
+				if (bonus_y > 14.0) {
+					putimage(bonus_x, bonus_y, &buffer[BONUS], XOR_PUT);
+				}
+				bonus_y += 1.0;
+				putimage(bonus_x, bonus_y, &buffer[BONUS], XOR_PUT);
+			}
+			if ((dr_bonus == 1) && (bonus_y >= 128.0)) {
+				dr_bonus = 0;
+				putimage(bonus_x, bonus_y, &buffer[BONUS], XOR_PUT);
+				bonus_y = 14.0;		
+			}
+			c=peekb(0x0040,0x0017) & 0x0f;
+			if (c == 1) {
+
+			} else if (c == 2) {
+
+			} 
 		}
 
 	} while (lives > 0);
