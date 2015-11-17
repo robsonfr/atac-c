@@ -640,14 +640,22 @@ void main(int argc, char **argv) {
 			} 
 			score_changed = 0;
 			if ((c & 8) != 0) {
-				switch(shoot()) {
+				switch(shoot() - 1) {
 					case 0: 
 						score_changed = 1;
 						circ_explosion(enemy_x + 8.0, enemy_y + 8);
-
-					break;
+						score += 100.0;
+						score_changed = 1;
+						break;
+						
 					case 1:
-
+						if (dr_powerup == 0) {
+							score_changed = 1;
+							circ_explosion(pup_x + 8, pup_y + 8);
+							score += 50;
+							powered_up = 1;
+							dr_powerup = 0;
+						}
 					break;
 
 					case 2:
