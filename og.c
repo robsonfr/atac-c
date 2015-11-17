@@ -479,10 +479,11 @@ int shoot() {
 }
 
 int dr_oneup, dr_bonus, dr_powerup, v5a, v1c;
-int lives, hit_enemy;
+int lives, score_changed, hit_ship;
 float score, record;
 
 int enemy_center, e_y, pup_x, oneup_x, bonus_x;
+int enemy_count, hit_enemy;
 float enemy_x, pup_y, oneup_y, bonus_y;
 float enemy_y;
 
@@ -510,9 +511,11 @@ void main(int argc, char **argv) {
 	story();
 	hud();
 
-	dr_oneup = dr_bonus = dr_powerup = v5a = v1c = 0;
+	dr_oneup = dr_bonus = dr_powerup = enemy_count = v1c = 0;
+	hit_ship = 0;
 	v4 = 0;
 	powered_up = 0;
+	hit_enemy = 0;
 	ship_x = 152;
 	putimage(ship_x, 144, &buffer[SHIP], XOR_PUT);
 	lives = 5;
@@ -521,6 +524,7 @@ void main(int argc, char **argv) {
 	do {
 		srand(time(0));
 		enemy_center = (rand() % 214) + 10;
+		hit_enemy = 0;
 		i=rand() % 1000;
 		if (i < (100 / (difficulty + 1))) {
 			if ((dr_powerup == 0) && (dr_bonus == 0) && (dr_oneup == 0)) {
@@ -553,8 +557,7 @@ void main(int argc, char **argv) {
 				} while (bonus_x == enemy_center);
 			}
 		}
-		enemy_y = 10.0;
-		while (enemy_y <=  128.0) {
+		for(enemy_y = 10.0; enemy_y <= 128.0 && hit_enemy == 0; enemy_y += 1.0) {
 			e_y = enemy_y;
 			if (e_y > 10) {
 				putimage((int)enemy_x, e_y - 1, &buffer[ENEMY], XOR_PUT);
@@ -623,14 +626,24 @@ void main(int argc, char **argv) {
 			}
 			c=peekb(0x0040,0x0017) & 0x0f;
 			if (c == 2) {
-
+				if (ship_x > 10) {
+					putimage(ship_x, 144, &buffer[SHIP], XOR_PUT);
+					ship_x--;
+					putimage(ship_x, 144, &buffer[SHIP], XOR_PUT);
+				}
 			} else if (c == 1) {
-
+				if (ship_x < 224) {
+					putimage(ship_x, 144, &buffer[SHIP], XOR_PUT);
+					ship_x++;
+					putimage(ship_x, 144, &buffer[SHIP], XOR_PUT);
+				}
 			} 
-			hit_enemy = 0;
+			score_changed = 0;
 			if ((c & 8) != 0) {
 				switch(shoot()) {
 					case 0: 
+						score_changed = 1;
+						circ_explosion(enemy_x + 8.0, enemy_y + 8);
 
 					break;
 					case 1:
@@ -647,9 +660,24 @@ void main(int argc, char **argv) {
 					default:
 				}
 			}
+			if (lives > 5) {
+				lives = 5;
+			}
+			bar(170, 162, 260, 178);
+			for(i=0;i<lives;i++) {
+				putimage(i * 16 + 170, 162, &buffer[ONEUP], COPY_PUT);
+			}
+			if (score_changed != 0) {
+
+			}
 			delay(velocity);
 			enemy_y += 1.0;
 		}
-
-	} while (lives > 0);
+		if (hit_enemy == 0) {
+			powered_up = 0;
+			lives--;
+			putimage(enemy_x, 128, &buffer[ENEMY], XOR_PUT);
+		} 
+	} while ((lives > 0) && (enemy_count < 50));
+	/* END */
 }
