@@ -38,6 +38,10 @@ char *seldif = "Escolha a dificuldade";
 char *facil = "1. Facil";
 char *dificil = "2. Dificil";
 
+char r_name[4] = {0x0, 0x0, 0x0, 0x0};
+
+char *sscore = "0000000";
+char *srec = "0000000";
 
 char *lScore = "SCORE :";
 char *lRecord = "RECORD:";
@@ -64,6 +68,14 @@ char *instr19 = "Pressione qualquer tecla para comecar...";
 
 int handle;
 char buffer[350];
+int dr_oneup, dr_bonus, dr_powerup, v5a, v1c;
+int lives, score_changed, hit_ship;
+float score, record;
+
+int enemy_center, e_y, pup_x, oneup_x, bonus_x;
+int enemy_count, hit_enemy, br_record;
+float enemy_x, pup_y, oneup_y, bonus_y;
+float enemy_y;
 
 #define SHIP 0
 #define ENEMY 70
@@ -422,7 +434,7 @@ void hud() {
 	settextstyle(DEFAULT_FONT,0,1);
 	outtextxy(20,180,lScore);
 	outtextxy(20,191,lRecord);
-	wait_key();	
+		
 }
 
 int check_collision() {
@@ -455,13 +467,13 @@ int shoot() {
 	gx = ex;
 	d[0] = abs(fx - (enemy_x + 8.0));
 	d[1] = abs(sx - (pup_x + 8));
-	d[2] = abs(sx - (oneup_x + 8));
-	d[3] = 	abs(sx - (bonus_x + 8));
+	d[2] = abs(sx - (bonus_x + 8));
+	d[3] = 	abs(sx - (oneup_x + 8));
 
 	e[0] = abs(gx - (enemy_x + 8.0));
 	e[1] = abs(ex - (pup_x + 8));
-	e[2] = abs(ex - (oneup_x + 8));
-	e[3] = abs(ex - (bonus_x + 8));
+	e[2] = abs(ex - (bonus_x + 8));
+	e[3] = abs(ex - (oneup_x + 8));
 
 	j = check_collision();
 
@@ -470,6 +482,12 @@ int shoot() {
 			if (d[i] <= 8) {
 				ret = i + 1;
 				break;
+			}
+			if (powered_up != 0) {
+				if (e[i] <= 8) {
+					ret = i + 1;
+					break;
+				}
 			} 
 		}
 	} else {
@@ -478,14 +496,6 @@ int shoot() {
 	return ret;
 }
 
-int dr_oneup, dr_bonus, dr_powerup, v5a, v1c;
-int lives, score_changed, hit_ship;
-float score, record;
-
-int enemy_center, e_y, pup_x, oneup_x, bonus_x;
-int enemy_count, hit_enemy;
-float enemy_x, pup_y, oneup_y, bonus_y;
-float enemy_y;
 
 
 
@@ -517,10 +527,11 @@ void main(int argc, char **argv) {
 	powered_up = 0;
 	hit_enemy = 0;
 	ship_x = 152;
+	score = 0;
 	putimage(ship_x, 144, &buffer[SHIP], XOR_PUT);
 	lives = 5;
 	setfillstyle(SOLID_FILL, 2);
-	score = 0;
+	br_record = 0;
 	do {
 		srand(time(0));
 		enemy_center = (rand() % 214) + 10;
@@ -562,7 +573,7 @@ void main(int argc, char **argv) {
 			if (e_y > 10) {
 				putimage((int)enemy_x, e_y - 1, &buffer[ENEMY], XOR_PUT);
 			}
-			enemy_x = cos(enemy_y * 4.0 / DEG_TO_RAD) * 20 + enemy_center;
+			enemy_x = cos(enemy_y * 4.0 / DEG_TO_RAD) * 20.0 + enemy_center;
 			if (enemy_x < 11.0) {
 				enemy_x = 11.0;
 			}		
@@ -576,7 +587,7 @@ void main(int argc, char **argv) {
 				powered_up = 0;
 				j = draw_laser(enemy_x + 7.0, e_y + 10, 150, 1, 1);
 				powered_up = t;
-				if ((j != 0) && (abs(ship_x - enemy_x) < 8)) {
+				if ((j != 0) && (abs((int)(ship_x - enemy_x)) < 8)) {
 					circ_explosion(ship_x + 8, 152);
 					lives--;
 					ship_x = 152;
@@ -640,32 +651,43 @@ void main(int argc, char **argv) {
 			} 
 			score_changed = 0;
 			if ((c & 8) != 0) {
-				switch(shoot() - 1) {
-					case 0: 
+				int d = shoot() - 1;
+				switch(d) {
+					case 0: /* Enemy */
 						score_changed = 1;
 						circ_explosion(enemy_x + 8.0, enemy_y + 8);
 						score += 100.0;
-						score_changed = 1;
+						enemy_count++;
+						hit_enemy = 1;
 						break;
-						
-					case 1:
-						if (dr_powerup == 0) {
+
+					case 1: /* Powerup */
+						if (dr_powerup == 1) {
 							score_changed = 1;
 							circ_explosion(pup_x + 8, pup_y + 8);
 							score += 50;
 							powered_up = 1;
 							dr_powerup = 0;
 						}
-					break;
+						break;
 
 					case 2:
-
-					break;
-
+						if (dr_bonus == 1) {
+							score_changed = 1;
+							circ_explosion(bonus_x + 8, bonus_y + 8);
+							dr_bonus = 0;
+							score += 1000.0;
+						}
+						break;					
 					case 3:
-
+						if (dr_oneup == 1) {
+							score_changed = 1;
+							circ_explosion(oneup_x + 8, oneup_y + 8);
+							dr_oneup = 0;
+							score += 500.0;
+							lives += 3;							
+						}
 					break;
-					default:
 				}
 			}
 			if (lives > 5) {
@@ -676,7 +698,24 @@ void main(int argc, char **argv) {
 				putimage(i * 16 + 170, 162, &buffer[ONEUP], COPY_PUT);
 			}
 			if (score_changed != 0) {
-
+				if (score > record) {
+					bar(190, 191, 218, 199);
+					br_record = 1;
+					record = score;
+					r_name[0] = 'H';
+					r_name[1] = 'I';
+					r_name[2] = ' ';
+					r_name[3] = 0;
+				}
+				setcolor(powered_up * 2 + 1);
+				outtextxy(190,191,lScore);
+				sprintf(sscore,"%07.0f",score);
+				bar(100,180,180,190);
+				setcolor(0);
+				outtextxy(100,180,sscore);
+				bar(100,191,180,199);
+				sprintf(srec,"%07.0f", record);
+				outtextxy(100,191,srec);
 			}
 			delay(velocity);
 			enemy_y += 1.0;
@@ -688,4 +727,5 @@ void main(int argc, char **argv) {
 		} 
 	} while ((lives > 0) && (enemy_count < 50));
 	/* END */
+
 }
