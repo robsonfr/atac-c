@@ -38,7 +38,7 @@ char *seldif = "Escolha a dificuldade";
 char *facil = "1. Facil";
 char *dificil = "2. Dificil";
 
-char r_name[4] = {0x0, 0x0, 0x0, 0x0};
+char *r_name = "ROB";
 
 char *sscore = "0000000";
 char *srec = "0000000";
@@ -70,7 +70,7 @@ int handle;
 char buffer[350];
 int dr_oneup, dr_bonus, dr_powerup, v5a, v1c;
 int lives, score_changed, hit_ship;
-float score, record;
+float score, record = 5000.0;
 
 int enemy_center, e_y, pup_x, oneup_x, bonus_x;
 int enemy_count, hit_enemy, br_record;
@@ -514,9 +514,11 @@ void main(int argc, char **argv) {
 	printf("\n Aperte qualquer tecla para iniciar");
 	wait_key();
 	initgraph(&g1,&g2,NULL);
-	intro();
-	outro();
-	instructions();
+	if ((argc <= 1) || (strcmp(argv[1],"-s") != 0)) {
+		intro();
+		outro();
+		instructions();
+	}
 	speed();
 	story();
 	hud();
@@ -568,8 +570,9 @@ void main(int argc, char **argv) {
 				} while (bonus_x == enemy_center);
 			}
 		}
+		enemy_x = 0.0;
 		for(enemy_y = 10.0; enemy_y <= 128.0 && hit_enemy == 0; enemy_y += 1.0) {
-			e_y = enemy_y;
+			e_y = (int)enemy_y;
 			if (e_y > 10) {
 				putimage((int)enemy_x, e_y - 1, &buffer[ENEMY], XOR_PUT);
 			}
@@ -580,7 +583,7 @@ void main(int argc, char **argv) {
 			if (enemy_x > 224.0) {
 				enemy_x = 224.0;
 			}
-			putimage(enemy_x, e_y, &buffer[ENEMY], XOR_PUT);
+			putimage((int)enemy_x, e_y, &buffer[ENEMY], XOR_PUT);
 			if ((difficulty != 0) && ((rand() % 1000) < 50) && (e_y <= 112)) {
 				int t, j;
 				t = powered_up;
@@ -690,12 +693,12 @@ void main(int argc, char **argv) {
 					break;
 				}
 			}
-			if (lives > 5) {
+			/*if (lives > 5) {
 				lives = 5;
-			}
+			}*/
 			bar(170, 162, 260, 178);
-			for(i=0;i<lives;i++) {
-				putimage(i * 16 + 170, 162, &buffer[ONEUP], COPY_PUT);
+			for(i=0;i<lives && i <5;i++) {
+				putimage(i * 16 + 170, 162, &buffer[ONEUP], 2);
 			}
 			if (score_changed != 0) {
 				if (score > record) {
@@ -708,7 +711,7 @@ void main(int argc, char **argv) {
 					r_name[3] = 0;
 				}
 				setcolor(powered_up * 2 + 1);
-				outtextxy(190,191,lScore);
+				outtextxy(190,191,r_name);
 				sprintf(sscore,"%07.0f",score);
 				bar(100,180,180,190);
 				setcolor(0);
@@ -718,7 +721,6 @@ void main(int argc, char **argv) {
 				outtextxy(100,191,srec);
 			}
 			delay(velocity);
-			enemy_y += 1.0;
 		}
 		if (hit_enemy == 0) {
 			powered_up = 0;
