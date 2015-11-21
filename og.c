@@ -497,7 +497,7 @@ int shoot() {
 }
 
 
-
+char *letra = "   ";
 
 void main(int argc, char **argv) {
 	int g1, g2;
@@ -729,5 +729,26 @@ void main(int argc, char **argv) {
 		} 
 	} while ((lives > 0) && (enemy_count < 50));
 	/* END */
-
+	gettextsettings(&tset);
+	settextjustify(1,1);
+	setcolor(2);
+	settextstyle(1,0,4);
+	if (enemy_count == 50) {
+		outtextxy(0x7D, 0x4B, "PARABENS !");
+	} else {
+		outtextxy(0x7D,0x4B,"GAME OVER");
+	}
+	settextjustify(tset.horiz, tset.vert);
+	settextstyle(0,0,1);
+	if (br_record != 0) {
+		outtextxy(24, 136, "Entre seu nome :");
+		printf("\x1B[18;20f");
+		gets(letra);
+		for(i=0;i<3;i++) {
+			r_name[i]=letra[i];
+		}
+	}
+	setcolor(1);
+	puttextcentered("Aperte qualquer tecla para recomecar...",150,2,3);
+	wait_key();
 }
