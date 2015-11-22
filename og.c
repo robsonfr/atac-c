@@ -68,7 +68,7 @@ char *instr19 = "Pressione qualquer tecla para comecar...";
 
 int handle;
 char buffer[350];
-int dr_oneup, dr_bonus, dr_powerup, v5a, v1c;
+int dr_oneup, dr_bonus, dr_powerup;
 int lives, score_changed, hit_ship;
 float score, record = 5000.0;
 
@@ -504,8 +504,11 @@ void main(int argc, char **argv) {
 	int i;
 	char c;
 	float v4;
+	int do_loop, do_intro;
 	g1 = CGA;
 	g2 = CGAC0;
+	do_loop = 0;
+	do_intro = 1;
 	printf(aguarde);
 	handle = open("ATAC-C.BMP",1);
 	read(handle, &buffer[0], 0x15E);
@@ -514,241 +517,253 @@ void main(int argc, char **argv) {
 	printf("\n Aperte qualquer tecla para iniciar");
 	wait_key();
 	initgraph(&g1,&g2,NULL);
-	if ((argc <= 1) || (strcmp(argv[1],"-s") != 0)) {
+	if (argc > 1) {
+		for(i=1;i<argc;i++) {
+			if (strcmp(argv[i],"-s") == 0) {
+				do_intro = 0;
+			}
+			if (strcmp(argv[i],"-l") == 0) {
+				do_loop = 1;
+			}
+		}
+	}
+	if (do_intro == 1) {
 		intro();
 		outro();
 		instructions();
 	}
-	speed();
-	story();
-	hud();
-
-	dr_oneup = dr_bonus = dr_powerup = enemy_count = v1c = 0;
-	hit_ship = 0;
-	v4 = 0;
-	powered_up = 0;
-	hit_enemy = 0;
-	ship_x = 152;
-	score = 0;
-	putimage(ship_x, 144, &buffer[SHIP], XOR_PUT);
-	lives = 5;
-	setfillstyle(SOLID_FILL, 2);
-	br_record = 0;
 	do {
-		srand(time(0));
-		enemy_center = (rand() % 214) + 10;
-		hit_enemy = 0;
-		i=rand() % 1000;
-		if (i < (100 / (difficulty + 1))) {
-			if ((dr_powerup == 0) && (dr_bonus == 0) && (dr_oneup == 0)) {
-				dr_oneup = 1;
-				oneup_y = 14.0;
-				do {
-					oneup_x = (rand() % 214) + 10;
-				} while (oneup_x == enemy_center);
-			}
-		}
-	
-		i=rand() % 1000;
-		if (i < (200 / (difficulty + 1))) {
-			if ((dr_powerup == 0) && (dr_bonus == 0) && (dr_oneup == 0)) {
-				dr_powerup = 1;
-				pup_y = 14.0;
-				do {
-					pup_x = (rand() % 214) + 10;
-				} while (pup_x == enemy_center);
-			}
-		}
+		speed();
+		story();
+		hud();
 
-		i=rand() % 1000;
-		if (i < (200 / (difficulty + 1))) {
-			if ((dr_powerup == 0) && (dr_bonus == 0) && (dr_oneup == 0)) {
-				dr_bonus = 1;
-				bonus_y = 14.0;
-				do {
-					bonus_x = (rand() % 214) + 10;
-				} while (bonus_x == enemy_center);
+		dr_oneup = dr_bonus = dr_powerup = enemy_count = 0;
+		hit_ship = 0;
+		v4 = 0;
+		powered_up = 0;
+		hit_enemy = 0;
+		ship_x = 152;
+		score = 0;
+		putimage(ship_x, 144, &buffer[SHIP], XOR_PUT);
+		lives = 5;
+		setfillstyle(SOLID_FILL, 2);
+		br_record = 0;
+		do {
+			srand(time(0));
+			enemy_center = (rand() % 214) + 10;
+			hit_enemy = 0;
+			i=rand() % 1000;
+			if (i < (100 / (difficulty + 1))) {
+				if ((dr_powerup == 0) && (dr_bonus == 0) && (dr_oneup == 0)) {
+					dr_oneup = 1;
+					oneup_y = 14.0;
+					do {
+						oneup_x = (rand() % 214) + 10;
+					} while (oneup_x == enemy_center);
+				}
 			}
-		}
-		enemy_x = 0.0;
-		for(enemy_y = 10.0; enemy_y <= 128.0 && hit_enemy == 0; enemy_y += 1.0) {
-			e_y = (int)enemy_y;
-			if (e_y > 10) {
-				putimage((int)enemy_x, e_y - 1, &buffer[ENEMY], XOR_PUT);
+		
+			i=rand() % 1000;
+			if (i < (200 / (difficulty + 1))) {
+				if ((dr_powerup == 0) && (dr_bonus == 0) && (dr_oneup == 0)) {
+					dr_powerup = 1;
+					pup_y = 14.0;
+					do {
+						pup_x = (rand() % 214) + 10;
+					} while (pup_x == enemy_center);
+				}
 			}
-			enemy_x = cos(enemy_y * 4.0 / DEG_TO_RAD) * 20.0 + enemy_center;
-			if (enemy_x < 11.0) {
-				enemy_x = 11.0;
-			}		
-			if (enemy_x > 224.0) {
-				enemy_x = 224.0;
+
+			i=rand() % 1000;
+			if (i < (200 / (difficulty + 1))) {
+				if ((dr_powerup == 0) && (dr_bonus == 0) && (dr_oneup == 0)) {
+					dr_bonus = 1;
+					bonus_y = 14.0;
+					do {
+						bonus_x = (rand() % 214) + 10;
+					} while (bonus_x == enemy_center);
+				}
 			}
-			putimage((int)enemy_x, e_y, &buffer[ENEMY], XOR_PUT);
-			if ((difficulty != 0) && ((rand() % 1000) < 50) && (e_y <= 112)) {
-				int t, j;
-				t = powered_up;
-				powered_up = 0;
-				j = draw_laser(enemy_x + 7.0, e_y + 10, 150, 1, 1);
-				powered_up = t;
-				if ((j != 0) && (abs((int)(ship_x - enemy_x)) < 8)) {
-					circ_explosion(ship_x + 8, 152);
-					lives--;
-					ship_x = 152;
-					if (lives != 0){
-						putimage(ship_x, 144, &buffer[SHIP], XOR_PUT);
+			enemy_x = 0.0;
+			for(enemy_y = 10.0; enemy_y <= 128.0 && hit_enemy == 0; enemy_y += 1.0) {
+				e_y = (int)enemy_y;
+				if (e_y > 10) {
+					putimage((int)enemy_x, e_y - 1, &buffer[ENEMY], XOR_PUT);
+				}
+				enemy_x = cos(enemy_y * 4.0 / DEG_TO_RAD) * 20.0 + enemy_center;
+				if (enemy_x < 11.0) {
+					enemy_x = 11.0;
+				}		
+				if (enemy_x > 224.0) {
+					enemy_x = 224.0;
+				}
+				putimage((int)enemy_x, e_y, &buffer[ENEMY], XOR_PUT);
+				if ((difficulty != 0) && ((rand() % 1000) < 50) && (e_y <= 112)) {
+					int t, j;
+					t = powered_up;
+					powered_up = 0;
+					j = draw_laser(enemy_x + 7.0, e_y + 10, 150, 1, 1);
+					powered_up = t;
+					if ((j != 0) && (abs((int)(ship_x - enemy_x)) < 8)) {
+						circ_explosion(ship_x + 8, 152);
+						lives--;
+						ship_x = 152;
+						if (lives != 0){
+							putimage(ship_x, 144, &buffer[SHIP], XOR_PUT);
+						}
 					}
 				}
-			}
-			
-			if ((dr_oneup == 1) && (oneup_y < 128.0)) {
-				if (oneup_y > 14.0) {
+				
+				if ((dr_oneup == 1) && (oneup_y < 128.0)) {
+					if (oneup_y > 14.0) {
+						putimage(oneup_x, oneup_y, &buffer[ONEUP], XOR_PUT);
+					}
+					oneup_y += 1.0;
 					putimage(oneup_x, oneup_y, &buffer[ONEUP], XOR_PUT);
 				}
-				oneup_y += 1.0;
-				putimage(oneup_x, oneup_y, &buffer[ONEUP], XOR_PUT);
-			}
-			if ((dr_oneup == 1) && (oneup_y >= 128.0)) {
-				dr_oneup = 0;
-				putimage(oneup_x, oneup_y, &buffer[ONEUP], XOR_PUT);
-				oneup_y = 14.0;		
-			}
+				if ((dr_oneup == 1) && (oneup_y >= 128.0)) {
+					dr_oneup = 0;
+					putimage(oneup_x, oneup_y, &buffer[ONEUP], XOR_PUT);
+					oneup_y = 14.0;		
+				}
 
-			if ((dr_powerup == 1) && (pup_y < 128.0)) {
-				if (pup_y > 14.0) {
+				if ((dr_powerup == 1) && (pup_y < 128.0)) {
+					if (pup_y > 14.0) {
+						putimage(pup_x, pup_y, &buffer[POWERUP], XOR_PUT);
+					}
+					pup_y += 1.0;
 					putimage(pup_x, pup_y, &buffer[POWERUP], XOR_PUT);
 				}
-				pup_y += 1.0;
-				putimage(pup_x, pup_y, &buffer[POWERUP], XOR_PUT);
-			}
-			if ((dr_powerup == 1) && (pup_y >= 128.0)) {
-				dr_powerup = 0;
-				putimage(pup_x, pup_y, &buffer[POWERUP], XOR_PUT);
-				pup_y = 14.0;		
-			}
+				if ((dr_powerup == 1) && (pup_y >= 128.0)) {
+					dr_powerup = 0;
+					putimage(pup_x, pup_y, &buffer[POWERUP], XOR_PUT);
+					pup_y = 14.0;		
+				}
 
-			if ((dr_bonus == 1) && (bonus_y < 128.0)) {
-				if (bonus_y > 14.0) {
+				if ((dr_bonus == 1) && (bonus_y < 128.0)) {
+					if (bonus_y > 14.0) {
+						putimage(bonus_x, bonus_y, &buffer[BONUS], XOR_PUT);
+					}
+					bonus_y += 1.0;
 					putimage(bonus_x, bonus_y, &buffer[BONUS], XOR_PUT);
 				}
-				bonus_y += 1.0;
-				putimage(bonus_x, bonus_y, &buffer[BONUS], XOR_PUT);
-			}
-			if ((dr_bonus == 1) && (bonus_y >= 128.0)) {
-				dr_bonus = 0;
-				putimage(bonus_x, bonus_y, &buffer[BONUS], XOR_PUT);
-				bonus_y = 14.0;		
-			}
-			c=peekb(0x0040,0x0017) & 0x0f;
-			if (c == 2) {
-				if (ship_x > 10) {
-					putimage(ship_x, 144, &buffer[SHIP], XOR_PUT);
-					ship_x--;
-					putimage(ship_x, 144, &buffer[SHIP], XOR_PUT);
+				if ((dr_bonus == 1) && (bonus_y >= 128.0)) {
+					dr_bonus = 0;
+					putimage(bonus_x, bonus_y, &buffer[BONUS], XOR_PUT);
+					bonus_y = 14.0;		
 				}
-			} else if (c == 1) {
-				if (ship_x < 224) {
-					putimage(ship_x, 144, &buffer[SHIP], XOR_PUT);
-					ship_x++;
-					putimage(ship_x, 144, &buffer[SHIP], XOR_PUT);
+				c=peekb(0x0040,0x0017) & 0x0f;
+				if (c == 2) {
+					if (ship_x > 10) {
+						putimage(ship_x, 144, &buffer[SHIP], XOR_PUT);
+						ship_x--;
+						putimage(ship_x, 144, &buffer[SHIP], XOR_PUT);
+					}
+				} else if (c == 1) {
+					if (ship_x < 224) {
+						putimage(ship_x, 144, &buffer[SHIP], XOR_PUT);
+						ship_x++;
+						putimage(ship_x, 144, &buffer[SHIP], XOR_PUT);
+					}
+				} 
+				score_changed = 0;
+				if ((c & 8) != 0) {
+					int d = shoot() - 1;
+					switch(d) {
+						case 0: /* Enemy */
+							score_changed = 1;
+							circ_explosion(enemy_x + 8.0, enemy_y + 8);
+							score += 100.0;
+							enemy_count++;
+							hit_enemy = 1;
+							break;
+
+						case 1: /* Powerup */
+							if (dr_powerup == 1) {
+								score_changed = 1;
+								circ_explosion(pup_x + 8, pup_y + 8);
+								score += 50;
+								powered_up = 1;
+								dr_powerup = 0;
+							}
+							break;
+
+						case 2:
+							if (dr_bonus == 1) {
+								score_changed = 1;
+								circ_explosion(bonus_x + 8, bonus_y + 8);
+								dr_bonus = 0;
+								score += 1000.0;
+							}
+							break;					
+						case 3:
+							if (dr_oneup == 1) {
+								score_changed = 1;
+								circ_explosion(oneup_x + 8, oneup_y + 8);
+								dr_oneup = 0;
+								score += 500.0;
+								lives += 3;							
+							}
+						break;
+					}
 				}
+				/*if (lives > 5) {
+					lives = 5;
+				}*/
+				bar(170, 162, 260, 178);
+				for(i=0;i<lives && i <5;i++) {
+					putimage(i * 16 + 170, 162, &buffer[ONEUP], 2);
+				}
+				if (score_changed != 0) {
+					if (score > record) {
+						bar(190, 191, 218, 199);
+						br_record = 1;
+						record = score;
+						r_name[0] = 'H';
+						r_name[1] = 'I';
+						r_name[2] = ' ';
+						r_name[3] = 0;
+					}
+					setcolor(powered_up * 2 + 1);
+					outtextxy(190,191,r_name);
+					sprintf(sscore,"%07.0f",score);
+					bar(100,180,180,190);
+					setcolor(0);
+					outtextxy(100,180,sscore);
+					bar(100,191,180,199);
+					sprintf(srec,"%07.0f", record);
+					outtextxy(100,191,srec);
+				}
+				delay(velocity);
+			}
+			if (hit_enemy == 0) {
+				powered_up = 0;
+				lives--;
+				putimage(enemy_x, 128, &buffer[ENEMY], XOR_PUT);
 			} 
-			score_changed = 0;
-			if ((c & 8) != 0) {
-				int d = shoot() - 1;
-				switch(d) {
-					case 0: /* Enemy */
-						score_changed = 1;
-						circ_explosion(enemy_x + 8.0, enemy_y + 8);
-						score += 100.0;
-						enemy_count++;
-						hit_enemy = 1;
-						break;
-
-					case 1: /* Powerup */
-						if (dr_powerup == 1) {
-							score_changed = 1;
-							circ_explosion(pup_x + 8, pup_y + 8);
-							score += 50;
-							powered_up = 1;
-							dr_powerup = 0;
-						}
-						break;
-
-					case 2:
-						if (dr_bonus == 1) {
-							score_changed = 1;
-							circ_explosion(bonus_x + 8, bonus_y + 8);
-							dr_bonus = 0;
-							score += 1000.0;
-						}
-						break;					
-					case 3:
-						if (dr_oneup == 1) {
-							score_changed = 1;
-							circ_explosion(oneup_x + 8, oneup_y + 8);
-							dr_oneup = 0;
-							score += 500.0;
-							lives += 3;							
-						}
-					break;
-				}
-			}
-			/*if (lives > 5) {
-				lives = 5;
-			}*/
-			bar(170, 162, 260, 178);
-			for(i=0;i<lives && i <5;i++) {
-				putimage(i * 16 + 170, 162, &buffer[ONEUP], 2);
-			}
-			if (score_changed != 0) {
-				if (score > record) {
-					bar(190, 191, 218, 199);
-					br_record = 1;
-					record = score;
-					r_name[0] = 'H';
-					r_name[1] = 'I';
-					r_name[2] = ' ';
-					r_name[3] = 0;
-				}
-				setcolor(powered_up * 2 + 1);
-				outtextxy(190,191,r_name);
-				sprintf(sscore,"%07.0f",score);
-				bar(100,180,180,190);
-				setcolor(0);
-				outtextxy(100,180,sscore);
-				bar(100,191,180,199);
-				sprintf(srec,"%07.0f", record);
-				outtextxy(100,191,srec);
-			}
-			delay(velocity);
+		} while ((lives > 0) && (enemy_count < 50));
+		/* END */
+		gettextsettings(&tset);
+		settextjustify(1,1);
+		setcolor(2);
+		settextstyle(1,0,4);
+		if (enemy_count == 50) {
+			outtextxy(0x7D, 0x4B, "PARABENS !");
+		} else {
+			outtextxy(0x7D,0x4B,"GAME OVER");
 		}
-		if (hit_enemy == 0) {
-			powered_up = 0;
-			lives--;
-			putimage(enemy_x, 128, &buffer[ENEMY], XOR_PUT);
-		} 
-	} while ((lives > 0) && (enemy_count < 50));
-	/* END */
-	gettextsettings(&tset);
-	settextjustify(1,1);
-	setcolor(2);
-	settextstyle(1,0,4);
-	if (enemy_count == 50) {
-		outtextxy(0x7D, 0x4B, "PARABENS !");
-	} else {
-		outtextxy(0x7D,0x4B,"GAME OVER");
-	}
-	settextjustify(tset.horiz, tset.vert);
-	settextstyle(0,0,1);
-	if (br_record != 0) {
-		outtextxy(24, 136, "Entre seu nome :");
-		printf("\x1B[18;20f");
-		gets(letra);
-		for(i=0;i<3;i++) {
-			r_name[i]=letra[i];
+		settextjustify(tset.horiz, tset.vert);
+		settextstyle(0,0,1);
+		if (br_record != 0) {
+			outtextxy(24, 136, "Entre seu nome :");
+			printf("\x1B[18;20f");
+			gets(letra);
+			for(i=0;i<3;i++) {
+				r_name[i]=letra[i];
+			}
 		}
-	}
-	setcolor(1);
-	puttextcentered("Aperte qualquer tecla para recomecar...",150,2,3);
-	wait_key();
+		setcolor(1);
+		puttextcentered("Aperte qualquer tecla para recomecar...",150,2,3);
+		wait_key();
+	} while (do_loop == 1);
 }
