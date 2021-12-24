@@ -1,37 +1,22 @@
-## Welcome to GitHub Pages
+## ATAC-C
 
-You can use the [editor on GitHub](https://github.com/robsonfr/atac-c/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+Esta é a página do projeto Atac-C. Mas, afinal de contas, o que é o Atac-C?
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+Atac-C é um jogo no estilo _Shoot'em up_ ou de navinha, feito por mim com ajuda dos meus amigos Ricardo e Roger em 1994 para a celebração de 30 anos de aniversário da escola que estudamos, a ETE (hoje ETEC) Lauro Gomes, localizada em São Bernardo do Campo, São Paulo, Brasil.
 
-### Markdown
+### Como compilar
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+O código foi escrito em C e foi utilizado o Turbo C 2.0, disponível gratuitamente no [site](http://edn.embarcadero.com/article/20841) da Embarcadero.
 
-```markdown
-Syntax highlighted code block
+Todo o código está no arquivo `OG.C`. Deve-se selecionar um modelo de memória no momento da compilação. Recomenda-se o modelo *medium* ou superior.
 
-# Header 1
-## Header 2
-### Header 3
+### Como executar
 
-- Bulleted
-- List
+Para executar o jogo é necessário um ambiente MS-DOS x86 adequado. O [DOSBox](http://dosbox.sourceforge.net) é altamente recomendado e também pode ser utilizado para trabalhar com o Turbo C.
 
-1. Numbered
-2. List
+### Um pouco de história
 
-**Bold** and _Italic_ and `Code` text
+Em 1994, para celebrar os 30 anos da ETE Lauro Gomes - escola técnica que ensina cursos técnicos em conjunto com o segundo grau - foi solicitado aos alunos que preparassem algum material. O pessoal de mecânica fez peças e outros objetos aludindo ao logotipo da escola. Por sua vez, alguns alunos de eletrônica também fizeram aparatos com luzes e/ou sons em homenagem à escola. Finalmente, alguns alunos do curso de Processamento de Dados fizeram animações em 3D. Com meu conhecimento em programação e apoio dos meus colegas Roger e Ricardo, fizemos um jogo de nave.
 
-[Link](url) and ![Image](src)
-```
+Por ser um trabalho escolar, acabei disponibilizando apenas o executável para os demais colegas. Com o passar dos anos, perdi o código-fonte e até mesmo o executável. Um dos meus colegas que recebeu o jogo - Leandro M.D. - me repassou o executável e os arquivos necessários para poder executar o jogo novamente. Muitos anos depois realizei um trabalho de engenharia reversa usando o IDA Pro Free Disassembler, e consegui chegar a um código-fonte capaz de gerar um executável praticamente idêntico ao original.
 
-For more details see [Basic writing and formatting syntax](https://docs.github.com/en/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/robsonfr/atac-c/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
