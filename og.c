@@ -1,11 +1,17 @@
+#define SDL_MAIN_HANDLED
+
 #include <graphics.h>
+#include <conio.h>
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 #include <math.h>
 #include <dos.h>
 
+
 void level();
+
+int colors[4] = { BLACK, LIGHTGREEN, LIGHTRED, YELLOW};
 
 char *etelg = "ETE LAURO GOMES";
 char *anos30 = "30 anos";
@@ -77,6 +83,14 @@ int enemy_count, hit_enemy, br_record;
 float enemy_x, pup_y, oneup_y, bonus_y;
 float enemy_y;
 
+void sound(int freq) {
+
+}
+
+void nosound() {
+
+}
+
 #define SHIP 0
 #define ENEMY 70
 #define POWERUP 140
@@ -112,18 +126,18 @@ void intro() {
 		}
 	}
 	cleardevice();
-	setcolor(2);
+	setcolor(colors[2]);
 	settextstyle(GOTHIC_FONT,0,8);
 	outtextxy(20,100, anos30);
 	for(i=0;i<305;i++) {
 		for(j=0;j<65;j++) {
 	/*		subtitulo[i*65+j]=getpixel(i+20,j+100); */
-			subtitulo[i*65+j]=getpixel(i+10,j+120); /* ???? */	
+			subtitulo[i*65+j]=getpixel(i+10,j+120); /* ???? */
 			c=3-subtitulo[i*65+j];
 			putpixel(i+10,j+120,c);
 		}
 	}
-	cleardevice();	
+	cleardevice();
 }
 
 int comp_cond(int a0, int a2, int a4) {
@@ -151,35 +165,35 @@ int draw_laser(int p, int q, int r, int s, int t) {
 					c=getpixel(ship_x+12,i);
 					if (c != 0) {
 						d = 1;
-					} 
+					}
 				} else {
 					d = 1;
 				}
-				putpixel(ship_x+3, i,rand() % 4);
-				putpixel(ship_x+12, i,rand() % 4);	
-			} 
+				putpixel(ship_x+3, i,colors[rand() % 4]);
+				putpixel(ship_x+12, i,colors[rand() % 4]);
+			}
 
 			if (comp_cond(-s,i,q) != 0) {
 				c=getpixel(p+l,i);
 				if (c != 0) {
 					d = 1;
 				}
-				putpixel(p+l, i, rand() % 4);
+				putpixel(p+l, i, colors[rand() % 4]);
 			}
 			if (t != 0) {
 				sound(300+(rand() % 500));
-				delay(1);
+				//delay(1);
 				nosound();
 			}
 		}
 	}
 	i=getcolor();
-	setcolor(0);
+	setcolor(colors[0]);
 	line(p,q,p,r);
 	line(p+1,q,p+1,r);
 	if (powered_up != 0) {
-		line(ship_x+3,q+8,ship_x+3,r);	
-		line(ship_x+12,q+8,ship_x+12,r);		
+		line(ship_x+3,q+8,ship_x+3,r);
+		line(ship_x+12,q+8,ship_x+12,r);
 	}
 	setcolor(i);
 	return d;
@@ -197,9 +211,9 @@ void circ_explosion(int x, int y) {
 			if (i > 2) {
 				o = cos(l) * (i - 2) + x;
 				p = sin(l) * (i - 2) + y;
-				putpixel((int) o, (int) p,0);	
+				putpixel((int) o, (int) p,0);
 			}
-			putpixel((int) m, (int) n, rand() % 4);
+			putpixel((int) m, (int) n, colors[rand() % 4]);
 
 		}
 	}
@@ -214,12 +228,12 @@ void circ_explosion(int x, int y) {
 		}
 	}
 	c=getcolor();
-	setcolor(0);
+	setcolor(colors[0]);
 	setfillstyle(1,0);
 	for(i=0;i<=8;i++) {
 		for(j=0;j<16;j++) {
-			setfillstyle(1, rand() % 4);
-			bar(x-i,y-i,x+i,y+i);	
+			setfillstyle(1, colors[rand() % 4]);
+			bar(x-i,y-i,x+i,y+i);
 		}
 		setfillstyle(1,0);
 		bar(x-i,y-i,x+i,y+i);
@@ -248,12 +262,12 @@ void outro() {
 			putimage(i+39,40,&buffer[SHIP],XOR_PUT);
 		}
 		putimage(i+40,40,&buffer[SHIP],XOR_PUT);
-		setcolor(3);
+		setcolor(colors[3]);
 		draw_laser(i+47,35,11,-1,1);
 		for(k=25;k>0;k--) {
 			for(l=0;l<2;l++) {
 				for(j=0;j<2;j++) {
-					putpixel(i+j+47,k+10,rand() % 4);
+					putpixel(i+j+47,k+10,colors[rand() % 4]);
 				}
 			}
 			for(j=0;j<2;j++) {
@@ -280,16 +294,16 @@ void outro() {
 		putimage(j+3,100,&buffer[ENEMY],XOR_PUT);
 		for(i=65;i>=0;i--) {
 			for(l=0;l<5;l++) {
-				putpixel(j+10,i+120,(rand() % 3)+1);
+				putpixel(j+10,i+120,colors[(rand() % 3)+1]);
 				sound((rand() % 500) + 300);
-				delay(1);
+				//delay(1);
 				nosound();
 			}
 			putpixel(j+10,i+120,subtitulo[j*65+i]);
 		}
 	}
 	putimage(306,100,&buffer[ENEMY],XOR_PUT);
-	setcolor(3);
+	setcolor(colors[3]);
 	wait_key();
 	setcolor(0);
 	line(0,100,319,100);
@@ -297,7 +311,7 @@ void outro() {
 		line(0,m,319,m);
 		line(0,200-m,319,200-m);
 	}
-	setcolor(3);
+	setcolor(colors[3]);
 	i=puttextcentered(autores,40,GOTHIC_FONT,2);
 	k=textheight("H");
 	m=k+42;
@@ -306,14 +320,14 @@ void outro() {
 	puttextcentered(apresentam,150,TRIPLEX_FONT,3);
 	wait_key();
 	cleardevice();
-	setcolor(2);
+	setcolor(colors[2]);
 	puttextcentered(atacc,20, TRIPLEX_FONT, 5);
 	i=textheight("H");
 	line(10,i+23,300,i+23);
 	line(10,i+26,300,i+26);
 	settextstyle(DEFAULT_FONT,0,1);
 	k=textheight("H");
-	setcolor(3);
+	setcolor(colors[3]);
 	outtextxy(5,80,direitos);
 	outtextxy(5,82+k,direitos2);
 	outtextxy(5,84+(k<<1),direitos3);
@@ -390,7 +404,7 @@ struct textsettingstype tset;
 void story() {
 	cleardevice();
 	gettextsettings(&tset);
-	setcolor(1);
+	setcolor(colors[1]);
 	settextjustify(CENTER_TEXT,BOTTOM_TEXT);
 	settextstyle(DEFAULT_FONT,0,1);
 	outtextxy(160,10,instrucoes);
@@ -414,7 +428,7 @@ void story() {
 	outtextxy(2,148, instr17);
 	outtextxy(42,156, instr18);
 	settextjustify(CENTER_TEXT,BOTTOM_TEXT);
-	outtextxy(160,170,instr19);	
+	outtextxy(160,170,instr19);
 	wait_key();
 	settextjustify(tset.horiz, tset.vert);
 
@@ -422,33 +436,34 @@ void story() {
 
 void hud() {
 	cleardevice();
-	setfillstyle(SOLID_FILL,2);
+	setcolor(colors[1]);
+	setfillstyle(SOLID_FILL,colors[2]);
 	bar(0,0,319,199);
-	setfillstyle(SOLID_FILL,0);
+	setfillstyle(SOLID_FILL,colors[0]);
 	bar(10,10,240,160);
-	setcolor(0);
+	setcolor(colors[0]);
 	settextstyle(TRIPLEX_FONT,1,2);
-	outtextxy(270,0,etelg);
+	outtextxy(270,190,etelg);
 	settextstyle(GOTHIC_FONT,1,2);
-	outtextxy(290,0,anos30);
+	outtextxy(290,190,anos30);
 	settextstyle(DEFAULT_FONT,0,1);
 	outtextxy(20,180,lScore);
 	outtextxy(20,191,lRecord);
-		
+
 }
 
 int check_collision() {
 	int i;
 	i = enemy_y;
-	if ((dr_bonus != 0) && (bonus_y < enemy_y) &&  (bonus_y < pup_y)  && (bonus_y < oneup_y)) { 
+	if ((dr_bonus != 0) && (bonus_y < enemy_y) &&  (bonus_y < pup_y)  && (bonus_y < oneup_y)) {
 		i = bonus_y;
 	}
 
-	if ((dr_powerup != 0) && (pup_y < enemy_y) &&  (pup_y < bonus_y)  && (pup_y < oneup_y)) { 
+	if ((dr_powerup != 0) && (pup_y < enemy_y) &&  (pup_y < bonus_y)  && (pup_y < oneup_y)) {
 		i = pup_y;
 	}
 
-	if ((dr_oneup != 0) && (oneup_y < enemy_y) &&  (oneup_y < pup_y)  && (oneup_y < bonus_y)) { 
+	if ((dr_oneup != 0) && (oneup_y < enemy_y) &&  (oneup_y < pup_y)  && (oneup_y < bonus_y)) {
 		i = oneup_y;
 	}
 
@@ -488,7 +503,7 @@ int shoot() {
 					ret = i + 1;
 					break;
 				}
-			} 
+			}
 		}
 	} else {
 		ret = 0;
@@ -499,24 +514,43 @@ int shoot() {
 
 char *letra = "   ";
 
-void main(int argc, char **argv) {
+int main(int argc, char **argv) {
 	int g1, g2;
 	int i;
 	char c;
 	float v4;
 	int do_loop, do_intro;
+	FILE *arq;
+	unsigned char *imagem;
+	int tamimagem;
 	g1 = CGA;
 	g2 = CGAC0;
 	do_loop = 0;
 	do_intro = 1;
 	printf(aguarde);
-	handle = open("ATAC-C.BMP",1);
-	read(handle, &buffer[0], 0x15E);
-	close(handle);
+	arq = fopen("ATAC-C.BMP","rb");
+	fread(buffer, 1, 0x15E, arq);
+	fclose(arq);
+	//handle = open("ATAC-C.BMP",O_RDONLY);
+	//read(handle, &buffer[0], 0x15E);
+	//close(handle);
 	printf("\n Carregamento concluido");
 	printf("\n Aperte qualquer tecla para iniciar");
 	wait_key();
 	initgraph(&g1,&g2,NULL);
+	cleardevice();
+	for(i=0;i<15;i++) {
+        putpixel(i,0,colors[1]);
+        putpixel(i,1,colors[2]);
+        putpixel(i,2,colors[3]);
+	}
+	tamimagem=imagesize(0,0,14,14);
+	imagem=(unsigned char *) malloc(tamimagem);
+	getimage(0,0,14,14,imagem);
+	arq = fopen("TESTE.BMP","wb");
+	fwrite(imagem,sizeof(unsigned char),tamimagem,arq);
+	fclose(arq);
+	exit(0);
 	if (argc > 1) {
 		for(i=1;i<argc;i++) {
 			if (strcmp(argv[i],"-s") == 0) {
@@ -549,7 +583,7 @@ void main(int argc, char **argv) {
 		setfillstyle(SOLID_FILL, 2);
 		br_record = 0;
 		do {
-			srand(time(0));
+			srand(0);
 			enemy_center = (rand() % 214) + 10;
 			hit_enemy = 0;
 			i=rand() % 1000;
@@ -562,7 +596,7 @@ void main(int argc, char **argv) {
 					} while (oneup_x == enemy_center);
 				}
 			}
-		
+
 			i=rand() % 1000;
 			if (i < (200 / (difficulty + 1))) {
 				if ((dr_powerup == 0) && (dr_bonus == 0) && (dr_oneup == 0)) {
@@ -593,7 +627,7 @@ void main(int argc, char **argv) {
 				enemy_x = cos(enemy_y * 4.0 / DEG_TO_RAD) * 20.0 + enemy_center;
 				if (enemy_x < 11.0) {
 					enemy_x = 11.0;
-				}		
+				}
 				if (enemy_x > 224.0) {
 					enemy_x = 224.0;
 				}
@@ -613,7 +647,7 @@ void main(int argc, char **argv) {
 						}
 					}
 				}
-				
+
 				if ((dr_oneup == 1) && (oneup_y < 128.0)) {
 					if (oneup_y > 14.0) {
 						putimage(oneup_x, oneup_y, &buffer[ONEUP], XOR_PUT);
@@ -624,7 +658,7 @@ void main(int argc, char **argv) {
 				if ((dr_oneup == 1) && (oneup_y >= 128.0)) {
 					dr_oneup = 0;
 					putimage(oneup_x, oneup_y, &buffer[ONEUP], XOR_PUT);
-					oneup_y = 14.0;		
+					oneup_y = 14.0;
 				}
 
 				if ((dr_powerup == 1) && (pup_y < 128.0)) {
@@ -637,7 +671,7 @@ void main(int argc, char **argv) {
 				if ((dr_powerup == 1) && (pup_y >= 128.0)) {
 					dr_powerup = 0;
 					putimage(pup_x, pup_y, &buffer[POWERUP], XOR_PUT);
-					pup_y = 14.0;		
+					pup_y = 14.0;
 				}
 
 				if ((dr_bonus == 1) && (bonus_y < 128.0)) {
@@ -650,9 +684,10 @@ void main(int argc, char **argv) {
 				if ((dr_bonus == 1) && (bonus_y >= 128.0)) {
 					dr_bonus = 0;
 					putimage(bonus_x, bonus_y, &buffer[BONUS], XOR_PUT);
-					bonus_y = 14.0;		
+					bonus_y = 14.0;
 				}
-				c=peekb(0x0040,0x0017) & 0x0f;
+				c=0;
+				//c=peekb(0x0040,0x0017) & 0x0f;
 				if (c == 2) {
 					if (ship_x > 10) {
 						putimage(ship_x, 144, &buffer[SHIP], XOR_PUT);
@@ -665,7 +700,7 @@ void main(int argc, char **argv) {
 						ship_x++;
 						putimage(ship_x, 144, &buffer[SHIP], XOR_PUT);
 					}
-				} 
+				}
 				score_changed = 0;
 				if ((c & 8) != 0) {
 					int d = shoot() - 1;
@@ -695,14 +730,14 @@ void main(int argc, char **argv) {
 								dr_bonus = 0;
 								score += 1000.0;
 							}
-							break;					
+							break;
 						case 3:
 							if (dr_oneup == 1) {
 								score_changed = 1;
 								circ_explosion(oneup_x + 8, oneup_y + 8);
 								dr_oneup = 0;
 								score += 500.0;
-								lives += 3;							
+								lives += 3;
 							}
 						break;
 					}
@@ -724,11 +759,11 @@ void main(int argc, char **argv) {
 						r_name[2] = ' ';
 						r_name[3] = 0;
 					}
-					setcolor(powered_up * 2 + 1);
+					setcolor(colors[powered_up * 2 + 1]);
 					outtextxy(190,191,r_name);
 					sprintf(sscore,"%07.0f",score);
 					bar(100,180,180,190);
-					setcolor(0);
+					setcolor(colors[0]);
 					outtextxy(100,180,sscore);
 					bar(100,191,180,199);
 					sprintf(srec,"%07.0f", record);
@@ -740,12 +775,15 @@ void main(int argc, char **argv) {
 				powered_up = 0;
 				lives--;
 				putimage(enemy_x, 128, &buffer[ENEMY], XOR_PUT);
-			} 
+			}
+			if (kbhit() == 13) {
+                break;
+			}
 		} while ((lives > 0) && (enemy_count < 50));
 		/* END */
 		gettextsettings(&tset);
 		settextjustify(1,1);
-		setcolor(2);
+		setcolor(colors[2]);
 		settextstyle(1,0,4);
 		if (enemy_count == 50) {
 			outtextxy(0x7D, 0x4B, "PARABENS !");
@@ -762,8 +800,9 @@ void main(int argc, char **argv) {
 				r_name[i]=letra[i];
 			}
 		}
-		setcolor(1);
+		setcolor(colors[1]);
 		puttextcentered("Aperte qualquer tecla para recomecar...",150,2,3);
 		wait_key();
 	} while (do_loop == 1);
+	exit(0);
 }
