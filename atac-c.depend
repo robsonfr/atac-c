@@ -1,0 +1,10 @@
+# depslib dependency file v1.0
+1705169815 source:c:\users\robson\dev\git\atac-c\og.c
+	<graphics.h>
+	<conio.h>
+	<stdio.h>
+	<string.h>
+	<stdlib.h>
+	<math.h>
+	<dos.h>
+
