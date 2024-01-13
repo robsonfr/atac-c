@@ -73,7 +73,7 @@ char *instr18 = "B O A   S O R T E   ! ! !";
 char *instr19 = "Pressione qualquer tecla para comecar...";
 
 int handle;
-char buffer[350];
+unsigned char buffer[5160];
 int dr_oneup, dr_bonus, dr_powerup;
 int lives, score_changed, hit_ship;
 float score, record = 5000.0;
@@ -92,10 +92,11 @@ void nosound() {
 }
 
 #define SHIP 0
-#define ENEMY 70
-#define POWERUP 140
-#define ONEUP 210
-#define BONUS 280
+#define ENEMY 1032
+#define POWERUP 2064
+#define ONEUP 3096
+#define BONUS 4128
+
 
 char titulo[5500];
 char subtitulo[19825];
@@ -514,6 +515,7 @@ int shoot() {
 
 char *letra = "   ";
 
+
 int main(int argc, char **argv) {
 	int g1, g2;
 	int i;
@@ -528,30 +530,18 @@ int main(int argc, char **argv) {
 	do_loop = 0;
 	do_intro = 1;
 	printf(aguarde);
-	arq = fopen("ATAC-C.BMP","rb");
-	fread(buffer, 1, 0x15E, arq);
+	arq = fopen("ATAC-C-SDL.BMP","rb");
+	fread(buffer, 1, 5160, arq);
 	fclose(arq);
-	//handle = open("ATAC-C.BMP",O_RDONLY);
-	//read(handle, &buffer[0], 0x15E);
-	//close(handle);
+
 	printf("\n Carregamento concluido");
 	printf("\n Aperte qualquer tecla para iniciar");
 	wait_key();
 	initgraph(&g1,&g2,NULL);
 	cleardevice();
-	for(i=0;i<15;i++) {
-        putpixel(i,0,colors[1]);
-        putpixel(i,1,colors[2]);
-        putpixel(i,2,colors[3]);
-	}
-	tamimagem=imagesize(0,0,14,14);
-	imagem=(unsigned char *) malloc(tamimagem);
-	getimage(0,0,14,14,imagem);
-	arq = fopen("TESTE.BMP","wb");
-	fwrite(imagem,sizeof(unsigned char),tamimagem,arq);
-	fclose(arq);
-	exit(0);
+
 	if (argc > 1) {
+
 		for(i=1;i<argc;i++) {
 			if (strcmp(argv[i],"-s") == 0) {
 				do_intro = 0;
