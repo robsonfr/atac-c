@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1705282604 source:c:\users\robson\dev\git\atac-c\og.c
+1705285336 source:c:\users\robson\dev\git\atac-c\og.c
 	<SDL2/SDL.h>
 	<graphics.h>
 	<conio.h>
