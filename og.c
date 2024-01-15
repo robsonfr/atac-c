@@ -1,5 +1,6 @@
 #define SDL_MAIN_HANDLED
 
+#include <SDL2/SDL.h>
 #include <graphics.h>
 #include <conio.h>
 #include <stdio.h>
@@ -109,16 +110,67 @@ void wait_key() {
 	if (code == 0) {
 		code = getch();
 	}
-	if (code == 3) {
+	if (code == 27) {
 		closegraph();
 		exit(0);
 	}
 }
 
+
+char teclas[3];
+
+int eventos() {
+  SDL_Event evento;
+  teclas[0] = 0;
+  teclas[1] = 0;
+  teclas[2] = 0;
+  while(SDL_PollEvent(&evento)) {
+    int t;
+    t = -1;
+    if ((evento.type == SDL_KEYDOWN) || (evento.type == SDL_KEYUP)) {
+        switch (evento.key.keysym.scancode) {
+        case SDL_SCANCODE_LSHIFT:
+            t = 0;
+            break;
+        case SDL_SCANCODE_RSHIFT:
+            t = 1;
+            break;
+        case SDL_SCANCODE_SPACE:
+            t = 2;
+            break;
+        default:
+            t = -1;
+        }
+    }
+    if (t != -1) {
+        teclas[t] = (evento.type == SDL_KEYDOWN ? 1 : 0);
+    }
+  }
+}
+
+int get_key() {
+    if (event() && eventtype() == SDL_KEYDOWN) {
+        return lastkey();
+    }
+    return 0;
+}
+
+int get_shift_keys() {
+    int key;
+    key = get_key();
+    if ((key == 'A') || (key == 'a') || (key == 'D') || (key == 'd')) {
+        printf("K: %d\n", key);
+    }
+    return 0;
+}
+
+
+
 void intro() {
 	int i,j;
-	int c,d;
+	int c;
 	cleardevice();
+	setcolor(colors[2]);
 	settextstyle(TRIPLEX_FONT,0,3);
 	outtextxy(40,10,etelg);
 	for(i=0;i<220;i++) {
@@ -520,11 +572,8 @@ int main(int argc, char **argv) {
 	int g1, g2;
 	int i;
 	char c;
-	float v4;
 	int do_loop, do_intro;
 	FILE *arq;
-	unsigned char *imagem;
-	int tamimagem;
 	g1 = CGA;
 	g2 = CGAC0;
 	do_loop = 0;
@@ -563,7 +612,6 @@ int main(int argc, char **argv) {
 
 		dr_oneup = dr_bonus = dr_powerup = enemy_count = 0;
 		hit_ship = 0;
-		v4 = 0;
 		powered_up = 0;
 		hit_enemy = 0;
 		ship_x = 152;
@@ -610,6 +658,10 @@ int main(int argc, char **argv) {
 			}
 			enemy_x = 0.0;
 			for(enemy_y = 10.0; enemy_y <= 128.0 && hit_enemy == 0; enemy_y += 1.0) {
+                eventos();
+                if (get_key() == KEY_ESC) {
+                    goto the_end;
+                }
 				e_y = (int)enemy_y;
 				if (e_y > 10) {
 					putimage((int)enemy_x, e_y - 1, &buffer[ENEMY], XOR_PUT);
@@ -677,6 +729,12 @@ int main(int argc, char **argv) {
 					bonus_y = 14.0;
 				}
 				c=0;
+				if (teclas[0] == 1) {
+                    c = 2;
+				}
+				if (teclas[1] == 1) {
+                    c = 1;
+				}
 				//c=peekb(0x0040,0x0017) & 0x0f;
 				if (c == 2) {
 					if (ship_x > 10) {
@@ -692,7 +750,7 @@ int main(int argc, char **argv) {
 					}
 				}
 				score_changed = 0;
-				if ((c & 8) != 0) {
+				if (teclas[2] == 1) {
 					int d = shoot() - 1;
 					switch(d) {
 						case 0: /* Enemy */
@@ -735,6 +793,7 @@ int main(int argc, char **argv) {
 				/*if (lives > 5) {
 					lives = 5;
 				}*/
+				setfillstyle(SOLID_FILL, colors[2]);
 				bar(170, 162, 260, 178);
 				for(i=0;i<lives && i <5;i++) {
 					putimage(i * 16 + 170, 162, &buffer[ONEUP], 2);
@@ -766,8 +825,8 @@ int main(int argc, char **argv) {
 				lives--;
 				putimage(enemy_x, 128, &buffer[ENEMY], XOR_PUT);
 			}
-			if (kbhit() == 13) {
-                break;
+			if (get_key() == KEY_ESC) {
+                goto the_end;
 			}
 		} while ((lives > 0) && (enemy_count < 50));
 		/* END */
@@ -794,5 +853,7 @@ int main(int argc, char **argv) {
 		puttextcentered("Aperte qualquer tecla para recomecar...",150,2,3);
 		wait_key();
 	} while (do_loop == 1);
+the_end:
+	closegraph();
 	exit(0);
 }
