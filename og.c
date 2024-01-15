@@ -22,6 +22,8 @@ char *autores2 = "Ricardo S. Silva";
 char *autores3 = "e Roger Alvarenga";
 char *apresentam = "APRESENTAM ...";
 
+char strx[16];
+
 char *atacc = "ATAC-C";
 char *direitos = "ATAC-C(c) Todos os direitos reservados";
 char *direitos2 = "... a turma 2o. O da area de PD e";
@@ -47,8 +49,8 @@ char *dificil = "2. Dificil";
 
 char *r_name = "ROB";
 
-char *sscore = "0000000";
-char *srec = "0000000";
+char sscore[16];
+char srec[16];
 
 char *lScore = "SCORE :";
 char *lRecord = "RECORD:";
@@ -77,7 +79,7 @@ int handle;
 unsigned char buffer[5160];
 int dr_oneup, dr_bonus, dr_powerup;
 int lives, score_changed, hit_ship;
-float score, record = 5000.0;
+int score, record = 5000;
 
 int enemy_center, e_y, pup_x, oneup_x, bonus_x;
 int enemy_count, hit_enemy, br_record;
@@ -119,7 +121,7 @@ void wait_key() {
 
 char teclas[3];
 
-int eventos() {
+void eventos() {
   SDL_Event evento;
   teclas[0] = 0;
   teclas[1] = 0;
@@ -175,6 +177,9 @@ void intro() {
 	outtextxy(40,10,etelg);
 	for(i=0;i<220;i++) {
 		for(j=0;j<25;j++) {
+			if (get_key() == 27) {
+                return;
+			}
 			titulo[i*25+j]=getpixel(i+40,j+10);
 		}
 	}
@@ -185,11 +190,15 @@ void intro() {
 	for(i=0;i<305;i++) {
 		for(j=0;j<65;j++) {
 	/*		subtitulo[i*65+j]=getpixel(i+20,j+100); */
+            if (get_key() == 27) {
+                return;
+			}
 			subtitulo[i*65+j]=getpixel(i+10,j+120); /* ???? */
 			c=3-subtitulo[i*65+j];
 			putpixel(i+10,j+120,c);
 		}
 	}
+
 	cleardevice();
 }
 
@@ -311,6 +320,9 @@ void outro() {
 	/* First the ship and the ETE Lauro Gomes */
 	/* After that, the enemy and the 30 anos */
 	for(i=0;i<219;i++) {
+        if (get_key() == 27) {
+            return;
+        }
 		if (i > 0) {
 			putimage(i+39,40,&buffer[SHIP],XOR_PUT);
 		}
@@ -318,6 +330,9 @@ void outro() {
 		setcolor(colors[3]);
 		draw_laser(i+47,35,11,-1,1);
 		for(k=25;k>0;k--) {
+		    if (get_key() == 27) {
+                return;
+			}
 			for(l=0;l<2;l++) {
 				for(j=0;j<2;j++) {
 					putpixel(i+j+47,k+10,colors[rand() % 4]);
@@ -330,6 +345,9 @@ void outro() {
 	}
 	putimage(258,40,&buffer[SHIP],XOR_PUT);
 	for(l=258;l>=152;l--) {
+	    if (get_key() == 27) {
+            return;
+        }
 		if (l<258) {
 			putimage(l+1,40,&buffer[SHIP],XOR_PUT);
 			putimage(l+1,60,&buffer[ENEMY],XOR_PUT);
@@ -341,6 +359,9 @@ void outro() {
 	circ_explosion(160,48);
 	putimage(152,60,&buffer[ENEMY],XOR_PUT);
 	for(j=0;j<304;j++) {
+        if (get_key() == 27) {
+            return;
+        }
 		if (j > 0) {
 			putimage(j+2,100,&buffer[ENEMY],XOR_PUT);
 		}
@@ -749,14 +770,14 @@ int main(int argc, char **argv) {
 						putimage(ship_x, 144, &buffer[SHIP], XOR_PUT);
 					}
 				}
-				score_changed = 0;
+				score_changed = 1;
 				if (teclas[2] == 1) {
 					int d = shoot() - 1;
 					switch(d) {
 						case 0: /* Enemy */
 							score_changed = 1;
 							circ_explosion(enemy_x + 8.0, enemy_y + 8);
-							score += 100.0;
+							score += 100;
 							enemy_count++;
 							hit_enemy = 1;
 							break;
@@ -776,7 +797,7 @@ int main(int argc, char **argv) {
 								score_changed = 1;
 								circ_explosion(bonus_x + 8, bonus_y + 8);
 								dr_bonus = 0;
-								score += 1000.0;
+								score += 1000;
 							}
 							break;
 						case 3:
@@ -784,7 +805,7 @@ int main(int argc, char **argv) {
 								score_changed = 1;
 								circ_explosion(oneup_x + 8, oneup_y + 8);
 								dr_oneup = 0;
-								score += 500.0;
+								score += 500;
 								lives += 3;
 							}
 						break;
@@ -808,14 +829,14 @@ int main(int argc, char **argv) {
 						r_name[2] = ' ';
 						r_name[3] = 0;
 					}
-					setcolor(colors[powered_up * 2 + 1]);
+					setcolor(colors[(powered_up & 1) * 2 + 1]);
 					outtextxy(190,191,r_name);
-					sprintf(sscore,"%07.0f",score);
+					snprintf(sscore,8,"%07d",score);
 					bar(100,180,180,190);
 					setcolor(colors[0]);
 					outtextxy(100,180,sscore);
 					bar(100,191,180,199);
-					sprintf(srec,"%07.0f", record);
+					 snprintf(srec,8,"%07d", record);
 					outtextxy(100,191,srec);
 				}
 				delay(velocity);
