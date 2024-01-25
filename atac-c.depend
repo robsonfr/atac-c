@@ -1,13 +1,19 @@
 # depslib dependency file v1.0
-1705285336 source:c:\users\robson\dev\git\atac-c\og.c
+1706144123 source:c:\users\robson\dev\git\atac-c\og.c
 	<SDL2/SDL.h>
-	<graphics.h>
 	<conio.h>
 	<stdio.h>
 	<string.h>
 	<stdlib.h>
 	<math.h>
 	<dos.h>
+	"og.h"
+	"ui.h"
+	"intro.h"
+	"input.h"
+	"sound.h"
+	"vfx.h"
+	"consts.h"
 
 1699217706 c:\sdl\sdl2-2.28.5\x86_64-w64-mingw32\include\graphics.h
 	<SDL2/SDL_bgi.h>
@@ -822,4 +828,50 @@
 	<math.h>
 	<string.h>
 	<emscripten.h>
+
+1705965963 c:\users\robson\dev\git\atac-c\og.h
+
+1705974059 c:\users\robson\dev\git\atac-c\ui.h
+
+1705973711 c:\users\robson\dev\git\atac-c\intro.h
+
+1705964768 c:\users\robson\dev\git\atac-c\input.h
+
+1705963926 c:\users\robson\dev\git\atac-c\sound.h
+
+1705963888 source:c:\users\robson\dev\git\atac-c\sound.c
+
+1705965519 source:c:\users\robson\dev\git\atac-c\input.c
+	<SDL2/SDL.h>
+	<graphics.h>
+	"input.h"
+
+1705965840 c:\users\robson\dev\git\atac-c\vfx.h
+
+1705973996 source:c:\users\robson\dev\git\atac-c\consts.c
+	"consts.h"
+
+1706144173 c:\users\robson\dev\git\atac-c\consts.h
+
+1705973617 source:c:\users\robson\dev\git\atac-c\intro.c
+	<graphics.h>
+	"intro.h"
+	"input.h"
+	"consts.h"
+	"vfx.h"
+	"sound.h"
+
+1705965851 source:c:\users\robson\dev\git\atac-c\vfx.c
+	<graphics.h>
+	"vfx.h"
+	"sound.h"
+	"consts.h"
+
+1705974188 source:c:\users\robson\dev\git\atac-c\ui.c
+	<graphics.h>
+	"consts.h"
+	"intro.h"
+	"input.h"
+	"vfx.h"
+	"ui.h"
 
