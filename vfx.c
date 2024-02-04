@@ -12,7 +12,7 @@ int comp_cond(int a0, int a2, int a4) {
 int draw_laser(int p, int q, int r, int s, int t) {
 	int i,l,c,d;
 	d=0;
-	for(i=q+8;comp_cond(s,i,r) != 0;i+=s) {
+	for(i=q-1;comp_cond(s,i,r) != 0;i+=s) {
 		for(l=0;l<2;l++) {
 			if(powered_up != 0) {
 				c=getpixel(ship_x+3,i);
@@ -44,8 +44,8 @@ int draw_laser(int p, int q, int r, int s, int t) {
 	}
 	i=getcolor();
 	setcolor(colors[0]);
-	line(p,q,p,r);
-	line(p+1,q,p+1,r);
+	line(p,q-1,p,r);
+	line(p+1,q-1,p+1,r);
 	if (powered_up != 0) {
 		line(ship_x+3,q+8,ship_x+3,r);
 		line(ship_x+12,q+8,ship_x+12,r);

@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1707017484 source:c:\users\robson\dev\git\atac-c\og.c
+1707017773 source:c:\users\robson\dev\git\atac-c\og.c
 	<SDL2/SDL.h>
 	<graphics.h>
 	<conio.h>
@@ -864,7 +864,7 @@
 	"vfx.h"
 	"sound.h"
 
-1706144992 source:c:\users\robson\dev\git\atac-c\vfx.c
+1707018482 source:c:\users\robson\dev\git\atac-c\vfx.c
 	<graphics.h>
 	"vfx.h"
 	"sound.h"
@@ -882,4 +882,8 @@
 	"structs.h"
 
 1707016164 c:\users\robson\dev\git\atac-c\structs.h
+
+1707017504 source:c:\users\robson\dev\git\atac-c\grp.c
+	"structs.h"
+	<graphics.h>
 

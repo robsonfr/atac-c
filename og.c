@@ -96,7 +96,7 @@ int main(int argc, char **argv) {
 	g1 = CGA;
 	g2 = CGAC0;
 	do_loop = 0;
-	do_intro = 1;
+	do_intro = 0;
 	//printf(aguarde);
 	arq = fopen("ATAC-C-SDL.BMP","rb");
 	fread(buffer, 1, 5160, arq);
