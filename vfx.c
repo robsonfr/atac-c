@@ -6,17 +6,7 @@
 
 int comp_cond(int a0, int a2, int a4) {
 	return ((a0 < 0 ? 1 : 0) ^ (a2 <= a4 ? 1 : 0));
-	/*
-	if (a0 < 0) {
-		if (a2 >= a4) {
-			return 1;
-		}
-	} else {
-		if (a2 <= a4) {
-			return 1;
-		}
-	}
-	return 0;*/
+
 }
 
 int draw_laser(int p, int q, int r, int s, int t) {

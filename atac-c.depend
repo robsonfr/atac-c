@@ -1,6 +1,7 @@
 # depslib dependency file v1.0
-1706144123 source:c:\users\robson\dev\git\atac-c\og.c
+1707017484 source:c:\users\robson\dev\git\atac-c\og.c
 	<SDL2/SDL.h>
+	<graphics.h>
 	<conio.h>
 	<stdio.h>
 	<string.h>
@@ -829,7 +830,8 @@
 	<string.h>
 	<emscripten.h>
 
-1705965963 c:\users\robson\dev\git\atac-c\og.h
+1707016180 c:\users\robson\dev\git\atac-c\og.h
+	"structs.h"
 
 1705974059 c:\users\robson\dev\git\atac-c\ui.h
 
@@ -841,7 +843,7 @@
 
 1705963888 source:c:\users\robson\dev\git\atac-c\sound.c
 
-1705965519 source:c:\users\robson\dev\git\atac-c\input.c
+1706144981 source:c:\users\robson\dev\git\atac-c\input.c
 	<SDL2/SDL.h>
 	<graphics.h>
 	"input.h"
@@ -851,9 +853,10 @@
 1705973996 source:c:\users\robson\dev\git\atac-c\consts.c
 	"consts.h"
 
-1706144173 c:\users\robson\dev\git\atac-c\consts.h
+1706144997 c:\users\robson\dev\git\atac-c\consts.h
+	<graphics.h>
 
-1705973617 source:c:\users\robson\dev\git\atac-c\intro.c
+1706144975 source:c:\users\robson\dev\git\atac-c\intro.c
 	<graphics.h>
 	"intro.h"
 	"input.h"
@@ -861,17 +864,22 @@
 	"vfx.h"
 	"sound.h"
 
-1705965851 source:c:\users\robson\dev\git\atac-c\vfx.c
+1706144992 source:c:\users\robson\dev\git\atac-c\vfx.c
 	<graphics.h>
 	"vfx.h"
 	"sound.h"
 	"consts.h"
 
-1705974188 source:c:\users\robson\dev\git\atac-c\ui.c
+1706144969 source:c:\users\robson\dev\git\atac-c\ui.c
 	<graphics.h>
 	"consts.h"
 	"intro.h"
 	"input.h"
 	"vfx.h"
 	"ui.h"
+
+1707006456 source:c:\users\robson\dev\git\atac-c\structs.c
+	"structs.h"
+
+1707016164 c:\users\robson\dev\git\atac-c\structs.h
 

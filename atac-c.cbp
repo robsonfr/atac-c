@@ -65,6 +65,7 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="sound.h" />
+		<Unit filename="structs.h" />
 		<Unit filename="ui.c">
 			<Option compilerVar="CC" />
 		</Unit>

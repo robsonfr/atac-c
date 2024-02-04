@@ -1,4 +1,4 @@
-
+#include "structs.h"
 
 
 void level();
@@ -26,12 +26,9 @@ float enemy_x, pup_y, oneup_y, bonus_y;
 float enemy_y;
 
 
-
-
-
-
-
-
-
 char *letra = "   ";
 
+TSprite sprBonus, sprPowerup, sprOneup;
+TSprite *sprites[3];
+
+TImage imgShip, imgEnemy;
