@@ -10,4 +10,8 @@ void init_consts() {
  velos[0] = 60;
  velos[1] = 30;
  velos[2] = 10;
+
+ record = 500;
+ strcpy(letra, "   ");
+ strcpy(r_name, "ROB");
 }

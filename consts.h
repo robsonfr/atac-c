@@ -13,13 +13,24 @@ int colors[4];
 #define DEG_TO_RAD  57.29577951308232
 
 int powered_up, ship_x;
-
-
+int score, record;
+char letra[4];
 int velocity;
 int difficulty;
 
 int velos[3];
 
 void init_consts();
+
+unsigned char buffer[5160];
+
+char strx[16];
+
+
+
+char r_name[4];
+
+char sscore[16];
+char srec[16];
 
 #endif

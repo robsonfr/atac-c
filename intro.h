@@ -2,7 +2,7 @@
 
 #define __INTRO_H__
 
-unsigned char buffer[5160];
+
 
 struct textsettingstype tset;
 

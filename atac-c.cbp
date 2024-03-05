@@ -49,6 +49,13 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="consts.h" />
+		<Unit filename="game.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="game.h" />
+		<Unit filename="grp.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="input.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -65,6 +72,9 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="sound.h" />
+		<Unit filename="structs.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="structs.h" />
 		<Unit filename="ui.c">
 			<Option compilerVar="CC" />
