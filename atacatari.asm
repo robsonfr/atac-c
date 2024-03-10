@@ -37,10 +37,13 @@ begin
 
     lda #0
     sta VSYNC
- REPEAT 37 
+ 
+    ldx #37
+vs1
     sta WSYNC
- REPEND
-    ; ldy #$3A
+    dex
+    bne vs1
+ 
     ldy #$0E
     sty COLUBK
 
@@ -59,12 +62,17 @@ begin
     ;repend
 
     include "morotlogo.asm"
+    ;include "resultado.asm"
     ;
     lda #%01000010
     sta VBLANK
- REPEAT 30
+    ldx #30
+
+vb1
     sta WSYNC
- REPEND
+    dex
+    bne vb1
+
     
     jmp begin
 

@@ -1,9 +1,13 @@
    ldx #$B2
    stx COLUP0
+   stx COLUP1
    ldx #$F0
    stx HMM0
+   stx HMP0
    ldx #48
    stx NUSIZ0
+   ldx #$30
+   stx NUSIZ1
    ldx #$00
    stx PF0
    ldx #$00
@@ -11,10 +15,16 @@
    ldx #$00
    stx PF2
    sta WSYNC
+   SLEEP 43
+   sta RESP0
    sta WSYNC
+   SLEEP 42
+   sta RESP1
    sta WSYNC
    SLEEP 38
    sta RESM0
+   SLEEP 8
+   sta RESM1
    sta WSYNC
    ldx #$00
    stx PF0
@@ -66,6 +76,9 @@
    sta WSYNC
    sta WSYNC
    sta WSYNC
+   sta HMOVE
+   ldx #$FF
+   stx GRP0
    ldx #$00
    stx PF0
    ldx #$00
@@ -76,15 +89,41 @@
    sta WSYNC
    sta WSYNC
    sta WSYNC
+   ldx #$FF
+   stx GRP1
    ldx #$00
    stx PF0
    ldx #$00
    stx PF1
    ldx #$20
    stx PF2
+   SLEEP 21
+   ldx #$B2
+   stx COLUBK
+   SLEEP 2
+   ldx #$0E
+   stx COLUBK
    sta WSYNC
+   SLEEP 41
+   ldx #$B2
+   stx COLUBK
+   SLEEP 2
+   ldx #$0E
+   stx COLUBK
    sta WSYNC
+   SLEEP 41
+   ldx #$B2
+   stx COLUBK
+   SLEEP 2
+   ldx #$0E
+   stx COLUBK
    sta WSYNC
+   SLEEP 41
+   ldx #$B2
+   stx COLUBK
+   SLEEP 2
+   ldx #$0E
+   stx COLUBK
    sta WSYNC
    ldx #$00
    stx PF0
@@ -92,34 +131,107 @@
    stx PF1
    ldx #$2C
    stx PF2
+   SLEEP 26
+   ldx #$B2
+   stx COLUBK
+   SLEEP 2
+   ldx #$0E
+   stx COLUBK
    sta WSYNC
+   SLEEP 41
+   ldx #$B2
+   stx COLUBK
+   SLEEP 2
+   ldx #$0E
+   stx COLUBK
    sta WSYNC
+   SLEEP 41
+   ldx #$B2
+   stx COLUBK
+   SLEEP 2
+   ldx #$0E
+   stx COLUBK
    sta WSYNC
-   sta WSYNC
+   SLEEP 41
+   ldx #$B2
+   stx COLUBK
+   SLEEP 2
+   ldx #$0E
+   stx COLUBK
+   sta WSYNC   
    ldx #$00
    stx PF0
    ldx #$00
    stx PF1
    ldx #$3E
    stx PF2
+   SLEEP 26
+   ldx #$B2
+   stx COLUBK
+   SLEEP 2
+   ldx #$0E
+   stx COLUBK
    sta WSYNC
+   SLEEP 41
+   ldx #$B2
+   stx COLUBK
+   SLEEP 2
+   ldx #$0E
+   stx COLUBK
    sta WSYNC
+   SLEEP 41
+   ldx #$B2
+   stx COLUBK
+   SLEEP 2
+   ldx #$0E
+   stx COLUBK
    sta WSYNC
+   SLEEP 41
+   ldx #$B2
+   stx COLUBK
+   SLEEP 2
+   ldx #$0E
+   stx COLUBK
    sta WSYNC
-   sta HMOVE
    ldx #2
    stx ENAM0
+   stx ENAM1
    ldx #$00
    stx PF0
    ldx #$00
    stx PF1
    ldx #$26
    stx PF2
+   SLEEP 18
+   ldx #$B2
+   stx COLUBK
+   SLEEP 2
+   ldx #$0E
+   stx COLUBK
    sta WSYNC
+   SLEEP 41
+   ldx #$B2
+   stx COLUBK
+   SLEEP 2
+   ldx #$0E
+   stx COLUBK   
    sta WSYNC
+   SLEEP 41
+   ldx #$B2
+   stx COLUBK
+   SLEEP 2
+   ldx #$0E
+   stx COLUBK   
    sta WSYNC
+   SLEEP 41
+   ldx #$B2
+   stx COLUBK
+   SLEEP 2
+   ldx #$0E
+   stx COLUBK   
    sta WSYNC
    ldx #$00
+   stx GRP1 
    stx PF0
    ldx #$00
    stx PF1
@@ -130,7 +242,9 @@
    sta WSYNC
    sta WSYNC
    ldx #$00
+   stx GRP0
    stx ENAM0
+   stx ENAM1
    stx PF0
    ldx #$00
    stx PF1
@@ -156,9 +270,33 @@
    stx PF1
    ldx #$18
    stx PF2
+   SLEEP 25
+   ldx #$2A
+   stx COLUBK
+   SLEEP 4
+   ldx #$0E
+   stx COLUBK
    sta WSYNC
+   SLEEP 40
+   ldx #$2A
+   stx COLUBK
+   SLEEP 4
+   ldx #$0E
+   stx COLUBK
    sta WSYNC
+   SLEEP 40
+   ldx #$2A
+   stx COLUBK
+   SLEEP 4
+   ldx #$0E
+   stx COLUBK
    sta WSYNC
+   SLEEP 40
+   ldx #$2A
+   stx COLUBK
+   SLEEP 4
+   ldx #$0E
+   stx COLUBK
    sta WSYNC   
    ldx #$00
    stx PF0
@@ -166,9 +304,13 @@
    stx PF1
    ldx #$08
    stx PF2
+   jsr p246
    sta WSYNC
+   jsr p396
    sta WSYNC
+   jsr p396
    sta WSYNC
+   jsr p396
    sta WSYNC
    ldx #$00
    stx PF0
@@ -176,19 +318,13 @@
    stx PF1
    ldx #$0C
    stx PF2
+   jsr p246
    sta WSYNC
+   jsr p396
    sta WSYNC
+   jsr p396
    sta WSYNC
-   sta WSYNC
-   ldx #$00
-   stx PF0
-   ldx #$00
-   stx PF1
-   ldx #$0E
-   stx PF2
-   sta WSYNC
-   sta WSYNC
-   sta WSYNC
+   jsr p396
    sta WSYNC
    ldx #$00
    stx PF0
@@ -196,19 +332,13 @@
    stx PF1
    ldx #$0E
    stx PF2
+   jsr p246
    sta WSYNC
+   jsr p396
    sta WSYNC
+   jsr p396
    sta WSYNC
-   sta WSYNC
-   ldx #$00
-   stx PF0
-   ldx #$00
-   stx PF1
-   ldx #$0E
-   stx PF2
-   sta WSYNC
-   sta WSYNC
-   sta WSYNC
+   jsr p396
    sta WSYNC
    ldx #$00
    stx PF0
@@ -216,9 +346,55 @@
    stx PF1
    ldx #$0E
    stx PF2
+   jsr p246
    sta WSYNC
+   jsr p396
    sta WSYNC
+   jsr p396
    sta WSYNC
+   jsr p396
+   sta WSYNC
+   ldx #$00
+   stx PF0
+   ldx #$00
+   stx PF1
+   ldx #$0E
+   stx PF2
+   jsr p246
+   sta WSYNC
+   jsr p396
+   sta WSYNC
+   jsr p396
+   sta WSYNC
+   jsr p396
+   sta WSYNC
+   ldx #$00
+   stx PF0
+   ldx #$00
+   stx PF1
+   ldx #$0E
+   stx PF2
+   jsr p246
+   sta WSYNC
+   jsr p396
+   sta WSYNC
+   jsr p396
+   sta WSYNC
+   jsr p396
+   sta WSYNC   
+   ldx #$00
+   stx PF0
+   ldx #$00
+   stx PF1
+   ldx #$1E
+   stx PF2
+   jsr p246
+   sta WSYNC
+   jsr p396
+   sta WSYNC
+   jsr p396
+   sta WSYNC
+   jsr p396
    sta WSYNC
    ldx #$00
    stx PF0
@@ -226,19 +402,13 @@
    stx PF1
    ldx #$1E
    stx PF2
+   jsr p246
    sta WSYNC
+   jsr p396
    sta WSYNC
+   jsr p396
    sta WSYNC
-   sta WSYNC
-   ldx #$00
-   stx PF0
-   ldx #$00
-   stx PF1
-   ldx #$1E
-   stx PF2
-   sta WSYNC
-   sta WSYNC
-   sta WSYNC
+   jsr p396
    sta WSYNC
    ldx #$00
    stx PF0
@@ -246,19 +416,13 @@
    stx PF1
    ldx #$1E
    stx PF2
+   jsr p246
    sta WSYNC
+   jsr p396
    sta WSYNC
+   jsr p396
    sta WSYNC
-   sta WSYNC
-   ldx #$00
-   stx PF0
-   ldx #$00
-   stx PF1
-   ldx #$1E
-   stx PF2
-   sta WSYNC
-   sta WSYNC
-   sta WSYNC
+   jsr p396
    sta WSYNC
    ldx #$00
    stx PF0
@@ -266,9 +430,13 @@
    stx PF1
    ldx #$1E
    stx PF2
+   jsr p246
    sta WSYNC
+   jsr p396
    sta WSYNC
+   jsr p396
    sta WSYNC
+   jsr p396
    sta WSYNC
    ldx #$00
    stx PF0
@@ -276,9 +444,27 @@
    stx PF1
    ldx #$1E
    stx PF2
+   jsr p246
    sta WSYNC
+   jsr p396
    sta WSYNC
+   jsr p396
    sta WSYNC
+   jsr p396
+   sta WSYNC
+   ldx #$00
+   stx PF0
+   ldx #$00
+   stx PF1
+   ldx #$1E
+   stx PF2
+   jsr p246
+   sta WSYNC
+   jsr p396
+   sta WSYNC
+   jsr p396
+   sta WSYNC
+   jsr p396
    sta WSYNC
    ldx #$00
    stx PF0
@@ -286,19 +472,13 @@
    stx PF1
    ldx #$16
    stx PF2
+   jsr p245
    sta WSYNC
+   jsr p395
    sta WSYNC
+   jsr p395
    sta WSYNC
-   sta WSYNC
-   ldx #$00
-   stx PF0
-   ldx #$00
-   stx PF1
-   ldx #$36
-   stx PF2
-   sta WSYNC
-   sta WSYNC
-   sta WSYNC
+   jsr p395
    sta WSYNC
    ldx #$00
    stx PF0
@@ -306,19 +486,13 @@
    stx PF1
    ldx #$36
    stx PF2
+   jsr p245
    sta WSYNC
+   jsr p395
    sta WSYNC
+   jsr p395
    sta WSYNC
-   sta WSYNC
-   ldx #$00
-   stx PF0
-   ldx #$00
-   stx PF1
-   ldx #$36
-   stx PF2
-   sta WSYNC
-   sta WSYNC
-   sta WSYNC
+   jsr p395
    sta WSYNC
    ldx #$00
    stx PF0
@@ -326,9 +500,41 @@
    stx PF1
    ldx #$36
    stx PF2
+   jsr p245
    sta WSYNC
+   jsr p395
    sta WSYNC
+   jsr p395
    sta WSYNC
+   jsr p395
+   sta WSYNC
+   ldx #$00
+   stx PF0
+   ldx #$00
+   stx PF1
+   ldx #$36
+   stx PF2
+   jsr p245
+   sta WSYNC
+   jsr p395
+   sta WSYNC
+   jsr p395
+   sta WSYNC
+   jsr p395
+   sta WSYNC
+   ldx #$00
+   stx PF0
+   ldx #$00
+   stx PF1
+   ldx #$36
+   stx PF2
+   jsr p245
+   sta WSYNC
+   jsr p395
+   sta WSYNC
+   jsr p395
+   sta WSYNC
+   jsr p395
    sta WSYNC
    ldx #$00
    stx PF0
@@ -336,9 +542,13 @@
    stx PF1
    ldx #$37
    stx PF2
+   jsr p245
    sta WSYNC
+   jsr p395
    sta WSYNC
+   jsr p395
    sta WSYNC
+   jsr p395
    sta WSYNC
    ldx #$00
    stx PF0
@@ -346,19 +556,13 @@
    stx PF1
    ldx #$27
    stx PF2
+   jsr p1
    sta WSYNC
+   jsr p412
    sta WSYNC
+   jsr p412
    sta WSYNC
-   sta WSYNC
-   ldx #$00
-   stx PF0
-   ldx #$00
-   stx PF1
-   ldx #$63
-   stx PF2
-   sta WSYNC
-   sta WSYNC
-   sta WSYNC
+   jsr p412
    sta WSYNC
    ldx #$00
    stx PF0
@@ -366,19 +570,13 @@
    stx PF1
    ldx #$63
    stx PF2
+   jsr p1
    sta WSYNC
+   jsr p412
    sta WSYNC
+   jsr p412
    sta WSYNC
-   sta WSYNC
-   ldx #$00
-   stx PF0
-   ldx #$00
-   stx PF1
-   ldx #$63
-   stx PF2
-   sta WSYNC
-   sta WSYNC
-   sta WSYNC
+   jsr p412
    sta WSYNC
    ldx #$00
    stx PF0
@@ -386,9 +584,18 @@
    stx PF1
    ldx #$63
    stx PF2
+   SLEEP 26
+   ldx #$2A
+   stx COLUBK
+   SLEEP 2
+   ldx #$0E
+   stx COLUBK   
    sta WSYNC
+   jsr p412
    sta WSYNC
+   jsr p412
    sta WSYNC
+   jsr p412
    sta WSYNC
    ldx #$00
    stx PF0
@@ -396,9 +603,46 @@
    stx PF1
    ldx #$63
    stx PF2
+   SLEEP 26
+   ldx #$2A
+   stx COLUBK
+   SLEEP 2
+   ldx #$0E
+   stx COLUBK   
    sta WSYNC
+   jsr p412
    sta WSYNC
+   jsr p412
    sta WSYNC
+   jsr p412
+   sta WSYNC
+   ldx #$00
+   stx PF0
+   ldx #$00
+   stx PF1
+   ldx #$63
+   stx PF2
+   jsr p1
+   sta WSYNC
+   jsr p412
+   sta WSYNC
+   jsr p412
+   sta WSYNC
+   jsr p412
+   sta WSYNC
+   ldx #$00
+   stx PF0
+   ldx #$00
+   stx PF1
+   ldx #$63
+   stx PF2
+   jsr p1
+   sta WSYNC
+   jsr p412
+   sta WSYNC
+   jsr p412
+   sta WSYNC
+   jsr p412
    sta WSYNC
    ldx #$00
    stx PF0
@@ -490,3 +734,72 @@
    sta WSYNC
    sta WSYNC
    sta WSYNC
+   jmp p2
+   jsr p1
+p1
+   nop
+   nop
+   nop
+   nop
+   nop
+   nop
+   nop
+   nop
+   nop
+   nop
+   ldx #$2A
+   stx COLUBK
+   nop
+   ldx #$0E
+   stx COLUBK   
+   rts
+p396
+   SLEEP 15
+p246
+   nop
+   nop
+   nop
+   nop
+   nop
+   nop
+   nop
+   nop
+   nop
+   ldx #$2A
+   stx COLUBK
+   nop
+   nop
+   nop
+   ldx #$0E
+   stx COLUBK   
+   rts
+p395
+   SLEEP 15
+p245
+   nop
+   nop
+   nop
+   nop
+   nop
+   nop
+   nop
+   nop
+   nop
+   ldx #$2A
+   stx COLUBK
+   SLEEP 5
+   ldx #$0E
+   stx COLUBK   
+   rts
+p412
+   SLEEP 15
+p262
+   SLEEP 20
+   ldx #$2A
+   stx COLUBK
+   SLEEP 2
+   ldx #$0E
+   stx COLUBK   
+   rts
+p2
+   nop
